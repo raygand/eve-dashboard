@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="EVE Fit">
+<meta name="theme-color" content="#0b0b0d">
+<title>Dr.Raygand · Fitness Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&family=Anuphan:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0d; --surface:#16161b; --surface-2:#1e1e25; --line:rgba(255,255,255,.08);
+    --txt:#f5f5f7; --muted:#9a9aa5; --red:#e11d2a; --red-soft:rgba(225,29,42,.14);
+    --green:#22c55e; --green-soft:rgba(34,197,94,.14);
+    --amber:#f59e0b; --amber-soft:rgba(245,158,11,.14);
+    --blue:#3b82f6; --blue-soft:rgba(59,130,246,.14);
+    --radius:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--txt);
+    font-family:'Anuphan','Noto Sans Thai',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:16px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;padding:0 0 40px;
+  }
+  .wrap{max-width:460px;margin:0 auto;padding:0 16px}
+  h1,h2,h3{font-family:'Prompt','Noto Sans Thai',sans-serif;margin:0;font-weight:600;line-height:1.25}
+  .head{
+    position:sticky;top:0;z-index:20;background:rgba(11,11,13,.82);
+    backdrop-filter:saturate(160%) blur(14px);-webkit-backdrop-filter:saturate(160%) blur(14px);
+    border-bottom:1px solid var(--line);padding:14px 0 12px;margin-bottom:6px;
+  }
+  .head .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .dot{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--red),#7a0f16);
+    display:grid;place-items:center;font-family:'Prompt';font-weight:700;font-size:17px;color:#fff;box-shadow:0 4px 14px rgba(225,29,42,.35)}
+  .brand b{font-family:'Prompt';font-weight:600;font-size:16px;letter-spacing:.2px}
+  .brand span{display:block;font-size:11px;color:var(--muted);letter-spacing:.3px}
+  .ver{font-size:11px;color:var(--muted);text-align:right;line-height:1.35}
+  .ver b{color:var(--txt);font-family:'Prompt';font-weight:500}
+
+  section{margin:16px 0}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+  .label{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:10px;font-family:'Prompt'}
+
+  /* TODAY */
+  .today{background:linear-gradient(160deg,#201016,#141018 60%);border:1px solid rgba(225,29,42,.28);position:relative;overflow:hidden}
+  .today:before{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 100% 0%,rgba(225,29,42,.20),transparent 55%);pointer-events:none}
+  .today .row{display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative}
+  .today .day{font-family:'Prompt';font-weight:700;font-size:22px}
+  .today .date{font-size:12px;color:var(--muted)}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-family:'Prompt';font-weight:600;font-size:12.5px;
+    padding:6px 11px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
+  .b-leg{background:var(--red-soft);color:#ff8088;border-color:rgba(225,29,42,.45)}
+  .b-run{background:var(--blue-soft);color:#93c0ff;border-color:rgba(59,130,246,.4)}
+  .b-upper{background:rgba(255,255,255,.07);color:#e6e6ea;border-color:var(--line)}
+  .b-refeed{background:var(--amber-soft);color:#ffd07a;border-color:rgba(245,158,11,.4)}
+  .today .train{margin-top:14px;font-size:15.5px;font-weight:500;position:relative}
+  .today .sub{margin-top:6px;font-size:13.5px;color:var(--muted);position:relative}
+  .today .nutri{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:13.5px;position:relative;display:flex;gap:8px;align-items:flex-start}
+  .today .nutri b{font-family:'Prompt';font-weight:600;color:#fff}
+  .warn{margin-top:12px;background:var(--amber-soft);border:1px solid rgba(245,158,11,.35);color:#ffe0a6;
+    border-radius:12px;padding:9px 12px;font-size:12.5px;position:relative}
+
+  /* METRIC GRID */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tile{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 14px}
+  .tile .k{font-size:11.5px;color:var(--muted);font-weight:500;letter-spacing:.2px}
+  .tile .v{font-family:'Prompt';font-weight:700;font-size:26px;margin-top:3px;line-height:1}
+  .tile .u{font-size:12px;color:var(--muted);font-weight:400;margin-left:3px}
+  .tile .delta{font-size:11.5px;margin-top:5px;font-weight:500}
+  .up{color:#ff8088}.ok{color:var(--green)}.mut{color:var(--muted)}
+
+  /* MISSION */
+  .mission .big{display:flex;align-items:baseline;gap:8px;margin-bottom:2px}
+  .mission .now{font-family:'Prompt';font-weight:700;font-size:34px}
+  .mission .arrow{color:var(--muted);font-size:20px}
+  .mission .goal{font-family:'Prompt';font-weight:600;font-size:20px;color:var(--red)}
+  .mission .gap{font-size:13px;color:var(--muted);margin-bottom:14px}
+  .mission .gap b{color:var(--txt)}
+  .track{height:9px;border-radius:999px;background:var(--surface-2);overflow:hidden;position:relative;border:1px solid var(--line)}
+  .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--red),#ff5a64)}
+  .timeline{margin-top:14px}
+  .timeline .ends{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
+  .tl-track{height:6px;border-radius:999px;background:var(--surface-2);position:relative;border:1px solid var(--line)}
+  .tl-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#3b82f6,#22c55e)}
+  .tl-dot{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 0 4px rgba(255,255,255,.12)}
+  .tl-meta{text-align:center;font-size:12.5px;color:var(--muted);margin-top:9px}
+  .tl-meta b{color:var(--txt);font-family:'Prompt';font-weight:600}
+
+  /* WEEK TABLE */
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  .wk td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  .wk tr:last-child td{border-bottom:none}
+  .wk .d{font-family:'Prompt';font-weight:600;width:44px;color:var(--muted)}
+  .wk .now td{background:var(--red-soft)}
+  .wk .now .d{color:#ff8088}
+  .pill{display:inline-block;font-size:10.5px;font-weight:600;font-family:'Prompt';padding:2px 7px;border-radius:6px;margin-left:4px;vertical-align:middle}
+  .pill.leg{background:var(--red-soft);color:#ff8088}
+  .pill.rf{background:var(--amber-soft);color:#ffd07a}
+
+  /* LISTS */
+  details{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden}
+  summary{padding:14px 16px;font-family:'Prompt';font-weight:600;font-size:15px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary:after{content:"＋";color:var(--muted);font-size:18px;font-weight:400}
+  details[open] summary:after{content:"−"}
+  .body{padding:0 16px 16px}
+  .meal{padding:10px 0;border-top:1px solid var(--line);font-size:13.5px}
+  .meal .t{font-family:'Prompt';font-weight:600;font-size:12.5px;color:var(--red);letter-spacing:.3px}
+  .meal .c{color:#dcdce2;margin-top:2px}
+  .macro{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+  .macro div{background:var(--surface-2);border-radius:11px;padding:9px 6px;text-align:center}
+  .macro .mv{font-family:'Prompt';font-weight:700;font-size:19px}
+  .macro .ml{font-size:10.5px;color:var(--muted);margin-top:1px}
+  ul.rules{margin:0;padding:0;list-style:none}
+  ul.rules li{padding:11px 0;border-top:1px solid var(--line);font-size:14px;display:flex;gap:10px;align-items:flex-start}
+  ul.rules li:first-child{border-top:none}
+  ul.rules .n{flex:none;width:22px;height:22px;border-radius:7px;background:var(--red-soft);color:#ff8088;font-family:'Prompt';font-weight:700;font-size:12px;display:grid;place-items:center;margin-top:1px}
+  .watch li .n{background:var(--amber-soft);color:#ffd07a}
+
+  .logtbl td{padding:9px 6px;border-bottom:1px solid var(--line);font-size:13px;text-align:center}
+  .logtbl th{padding:8px 6px;font-size:11px;color:var(--muted);font-weight:600;font-family:'Prompt';border-bottom:1px solid var(--line);text-align:center}
+  .logtbl td:first-child,.logtbl th:first-child{text-align:left}
+  .logtbl .pending td{color:var(--muted)}
+
+  .note{font-size:12.5px;color:var(--muted);line-height:1.6}
+  .foot{margin-top:24px;text-align:center;font-size:11.5px;color:var(--muted);line-height:1.7}
+  .foot b{color:#c9c9d1;font-family:'Prompt';font-weight:500}
+  .how{background:var(--green-soft);border:1px solid rgba(34,197,94,.3);border-radius:14px;padding:13px 15px;font-size:13px;color:#c8f2d4}
+  .how b{font-family:'Prompt';font-weight:600;color:#fff}
+  code{background:rgba(255,255,255,.08);padding:1px 6px;border-radius:5px;font-size:12px;font-family:ui-monospace,monospace}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <div class="brand">
+      <div class="dot">E</div>
+      <div><b>Dr.Raygand</b><span>Eve · Fitness System</span></div>
+    </div>
+    <div class="ver"><b>v1.3</b><br>อัปเดต 14 Jul 2026</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- TODAY -->
+  <section>
+    <div class="card today">
+      <div class="row">
+        <div>
+          <div class="day" id="todayName">วันนี้</div>
+          <div class="date" id="todayDate">—</div>
+        </div>
+        <div id="todayBadge"></div>
+      </div>
+      <div class="train" id="todayTrain">—</div>
+      <div class="sub" id="todayCardio">—</div>
+      <div class="nutri"><span>🍽️</span><div><b id="nutriMode">Baseline</b> <span id="nutriDetail" class="mut"></span></div></div>
+      <div id="todayWarn"></div>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section>
+    <div class="label">ภารกิจ · Road to sub-10%</div>
+    <div class="card mission">
+      <div class="big">
+        <span class="now">16.8%</span>
+        <span class="arrow">→</span>
+        <span class="goal">&lt; 10%</span>
+      </div>
+      <div class="gap">ต้องลดไขมันอีก <b>~5.4 kg</b> (6.8 จุด) → จบที่ <b>~66.5–67 kg</b></div>
+      <div class="track"><div class="fill" style="width:2%"></div></div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:6px">ความคืบหน้าลดไขมัน · <b style="color:var(--txt)">Day 1</b> — เริ่มนับจาก baseline วันนี้</div>
+
+      <div class="timeline">
+        <div class="ends"><span>14 Jul</span><span>เป้า ~15 Oct</span></div>
+        <div class="tl-track"><div class="tl-fill" id="tlFill" style="width:0%"></div><div class="tl-dot" id="tlDot" style="left:0%"></div></div>
+        <div class="tl-meta">เหลือ <b id="daysLeft">~93 วัน</b> · <span id="weeksLeft">~13 สัปดาห์</span> ถึงกลางตุลาคม</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section>
+    <div class="label">InBody ล่าสุด · 14 Jul (scan เย็น)</div>
+    <div class="grid">
+      <div class="tile"><div class="k">น้ำหนัก</div><div class="v">71.9<span class="u">kg</span></div><div class="delta up">▲ +2.5 (ไขมัน +2.6 / กล้าม +0.1)</div></div>
+      <div class="tile"><div class="k">Body Fat</div><div class="v">16.8<span class="u">%</span></div><div class="delta mut">fat mass 12.1 kg</div></div>
+      <div class="tile"><div class="k">Skeletal Muscle</div><div class="v">34.3<span class="u">kg</span></div><div class="delta ok">● ทรงตัว</div></div>
+      <div class="tile"><div class="k">BMR</div><div class="v">1,662<span class="u">kcal</span></div><div class="delta mut">Visceral Lv.4 · WHR 0.81</div></div>
+    </div>
+    <div class="note" style="margin-top:10px">📅 InBody รอบถัดไป <b style="color:#c9c9d1">~28 Jul</b> — ชั่ง <b style="color:#c9c9d1">เช้า ท้องว่าง หลังเข้าห้องน้ำ</b> ทุกครั้ง (ทุก 2 สัปดาห์)</div>
+  </section>
+
+  <!-- WEEK -->
+  <section>
+    <div class="label">ตารางซ้อม · สัปดาห์ (v1.3)</div>
+    <div class="card" style="padding:6px 10px">
+      <table class="wk"><tbody id="weekBody"></tbody></table>
+    </div>
+  </section>
+
+  <!-- NUTRITION -->
+  <section>
+    <div class="label">โภชนาการ</div>
+    <details>
+      <summary>มื้ออาหาร Baseline (จ–ศ + อา)</summary>
+      <div class="body">
+        <div class="meal"><div class="t">PRE-WORKOUT · เช้า</div><div class="c">Whey 1 scoop (27g P) + BCAA + Spinach + Berry 30g + Lemon juice</div></div>
+        <div class="meal"><div class="t">POST-WORKOUT</div><div class="c">Whey 1 scoop (27g P) + Creatine 5g + Collagen 5g + Magnesium + Almond 30g</div></div>
+        <div class="meal"><div class="t">กลางวัน</div><div class="c">ข้าวสุก 200g + อกไก่ไม่ติดมัน 150g + ไข่เต็มฟอง 2</div></div>
+        <div class="meal"><div class="t">เย็น</div><div class="c">ข้าวสุก 200g + แซลมอนย่างลอกหนัง 150g + ไข่เต็มฟอง 2</div></div>
+        <div class="meal"><div class="t">PRE-BED · 19:00</div><div class="c">Whey 1 scoop (27g P) + Greek yogurt + Magnesium</div></div>
+        <div class="macro">
+          <div><div class="mv" style="color:var(--green)">192</div><div class="ml">Protein g ✅</div></div>
+          <div><div class="mv">55</div><div class="ml">Fat g</div></div>
+          <div><div class="mv">128</div><div class="ml">Carbs g</div></div>
+          <div><div class="mv">1,880</div><div class="ml">kcal</div></div>
+        </div>
+        <div class="note" style="margin-top:10px">Deficit ~520–720 kcal/วัน · คาร์บต่ำโดยตั้งใจ (Phase 1)</div>
+      </div>
+    </details>
+    <details>
+      <summary>เสาร์ · Structured Refeed 🍚</summary>
+      <div class="body">
+        <div class="note" style="color:#dcdce2;font-size:13.5px">
+          คาร์บ <b style="color:#fff">250–300g</b> · โปรตีนคงเดิม · Fat ≤60g · ~2,400–2,600 kcal · free meal ของอร่อย <b style="color:#fff">1 มื้อเต็ม</b><br><br>
+          หลักการ: <b style="color:#ffd07a">"กินเพิ่มที่จาน ไม่ใช่กินอิสระที่ใจ"</b> → คาร์บเฉลี่ยทั้งสัปดาห์ ~150g/วัน · เติม glycogen ไว้วิ่งวันอาทิตย์
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- IRON RULES -->
+  <section>
+    <div class="label">กฎเหล็ก · Iron Rules</div>
+    <div class="card">
+      <ul class="rules">
+        <li><span class="n">1</span><div><b style="font-family:Prompt">Leg day ห้ามตัดทุกกรณี</b> — priority สูงสุด (รักษากล้ามขา)</div></li>
+        <li><span class="n">2</span><div>เวย์ 3 มื้อคือโครงหลัก — พลาด 1 scoop โปรตีนหลุดต่ำกว่า 180g</div></li>
+        <li><span class="n">3</span><div>โปรตีนเฉลี่ย <b>ห้ามต่ำกว่า 180g</b> ช่วง cut</div></li>
+        <li><span class="n">4</span><div>Fat <b>ห้ามต่ำกว่า 40g</b> ต่อเนื่อง (ฮอร์โมน)</div></li>
+        <li><span class="n">5</span><div>น้ำหนักเด้ง 2–3 วันหลังเพิ่มคาร์บ = น้ำ+glycogen ดู trend หลังวันที่ 4</div></li>
+        <li><span class="n">6</span><div>Baseline นี้ = ถาวร (Phase 1) · BF แตะ 10–11% → ทบทวนยกคาร์บ ~130–150g</div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- WATCH -->
+  <section>
+    <div class="label">Eve เฝ้าจับตา · First Principles</div>
+    <div class="card">
+      <ul class="rules watch">
+        <li><span class="n">!</span><div><b style="font-family:Prompt">อ่านค่ารอบ 28 Jul อย่าเพิ่งดีใจ</b> — baseline นี้ scan เย็น แต่รอบหน้าชั่งเช้าท้องว่าง ตัวเลขอาจดูลดเยอะผิดจริงจากเงื่อนไขการชั่งที่ต่างกัน</div></li>
+        <li><span class="n">!</span><div><b style="font-family:Prompt">พฤหัส Run → ศุกร์ Leg</b> คือจุดเปราะ glycogen ขาพร่องก่อนวันขาสำคัญ ถ้าแรง Squat/RDL ศุกร์ถอย 2 รอบ → เปิด mini-refeed พุธ</div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- LOG -->
+  <section>
+    <div class="label">Tracking Log</div>
+    <div class="card" style="padding:8px 12px">
+      <table class="logtbl">
+        <thead><tr><th>วันที่</th><th>นน.</th><th>BF%</th><th>กล้าม</th><th>HRV</th></tr></thead>
+        <tbody>
+          <tr><td>14 Jul</td><td>71.9</td><td>16.8</td><td>34.3</td><td>—</td></tr>
+          <tr class="pending"><td>~28 Jul</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:8px">แถวจะเติมเองทุกครั้งที่ส่งค่าใหม่ · กราฟ trend จะขึ้นเมื่อมี ≥2 จุดข้อมูล</div>
+  </section>
+
+  <!-- HOW TO UPDATE -->
+  <section>
+    <div class="how">
+      <b>อัปเดตทุกเช้า:</b> ส่งไฟล์ <code>Health-YYYY-MM-DD.txt</code> หรือค่า InBody เข้าแชท แล้วพิมพ์ <b>"อัปเดต dashboard"</b> — Eve จะเติมกราฟ/ตาราง/trend, bump version, ต่อ changelog แล้วเซฟทับไฟล์นี้ในโฟลเดอร์ Drive เดิม
+    </div>
+  </section>
+
+  <div class="foot">
+    <b>EVE-FITNESS-SYSTEM v1.3</b> · source of truth<br>
+    Leg day ห้ามตัด · Protein ≥180g · Fat ≥40g<br>
+    <span id="genstamp"></span>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var days=[
+    {name:"อาทิตย์",badge:["🏃 RUN 10K","b-run"],train:"Easy Run 10 km · Zone 2",cardio:"glycogen เต็มจาก refeed เมื่อวาน",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
+    {name:"จันทร์",badge:["🏋️ UPPER","b-upper"],train:"Upper — Shoulder 4 · Back 4 · Chest 4 · Bi 2 · Tri 2",cardio:"Incline Walk 15 / 4 / 30 นาที",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
+    {name:"อังคาร",badge:["🔒 LEG DAY","b-leg"],train:"Leg 5–7 ท่า — Squat / RDL / Leg Press",cardio:"ไม่มี cardio วันนี้",nutri:"Baseline",detail:"· กินให้ครบ เวทขาต้องมีแรง",warn:"leg"},
+    {name:"พุธ",badge:["🏋️ UPPER","b-upper"],train:"Upper (เหมือนจันทร์)",cardio:"Incline Walk 15 / 4 / 30 นาที",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
+    {name:"พฤหัสบดี",badge:["🏃 RUN 10K","b-run"],train:"Easy Run 10 km · Zone 2 (60–75 นาที)",cardio:"คุม pace ครึ่งหลังให้นิ่ง",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
+    {name:"ศุกร์",badge:["🔒 LEG DAY","b-leg"],train:"Leg — จุดเฝ้าระวังหลักของสัปดาห์",cardio:"ไม่มี cardio วันนี้",nutri:"Baseline",detail:"· วันขาที่สำคัญที่สุด",warn:"legfri"},
+    {name:"เสาร์",badge:["🍚 REFEED","b-refeed"],train:"Rest + Structured Refeed",cardio:"พักเต็มที่ / เดินเบา",nutri:"Refeed",detail:"· คาร์บ 250–300g · free meal 1 มื้อ",warn:""}
+  ];
+  var months=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+  var now=new Date();
+  var dow=now.getDay();
+  var d=days[dow];
+
+  document.getElementById("todayName").textContent="วัน"+d.name;
+  document.getElementById("todayDate").textContent=now.getDate()+" "+months[now.getMonth()]+" "+(now.getFullYear()+543);
+  var bd=document.getElementById("todayBadge");
+  bd.innerHTML='<span class="badge '+d.badge[1]+'">'+d.badge[0]+'</span>';
+  document.getElementById("todayTrain").textContent=d.train;
+  document.getElementById("todayCardio").textContent=d.cardio;
+  document.getElementById("nutriMode").textContent=d.nutri;
+  document.getElementById("nutriDetail").textContent=d.detail;
+  var w=document.getElementById("todayWarn");
+  if(d.warn==="leg"){w.innerHTML='<div class="warn">🔒 กฎเหล็ก #1 — Leg day ห้ามตัด ไม่ว่าเมื่อวานจะกิน/นอนหลุดแค่ไหน</div>';}
+  else if(d.warn==="legfri"){w.innerHTML='<div class="warn">🔒 Leg วันศุกร์ = จุดชี้วัดของสัปดาห์ · จดน้ำหนัก Squat/RDL + แรงกลางเซสชันไว้รายงาน Eve</div>';}
+
+  // timeline
+  var start=new Date(2026,6,14), goal=new Date(2026,9,15);
+  var pct=Math.max(0,Math.min(100,Math.round((now-start)/(goal-start)*100)));
+  var left=Math.max(0,Math.ceil((goal-now)/86400000));
+  document.getElementById("tlFill").style.width=pct+"%";
+  document.getElementById("tlDot").style.left=pct+"%";
+  document.getElementById("daysLeft").textContent="~"+left+" วัน";
+  document.getElementById("weeksLeft").textContent="~"+Math.round(left/7)+" สัปดาห์";
+
+  // week table
+  var order=[1,2,3,4,5,6,0];
+  var short=["อา","จ","อ","พ","พฤ","ศ","ส"];
+  var rows="";
+  order.forEach(function(i){
+    var x=days[i], cls=(i===dow)?' class="now"':'';
+    var extra="";
+    if(x.warn==="leg"||x.warn==="legfri")extra=' <span class="pill leg">ห้ามตัด</span>';
+    if(i===6)extra=' <span class="pill rf">refeed</span>';
+    var line=x.train.split("—")[0].split("·")[0].trim();
+    rows+='<tr'+cls+'><td class="d">'+short[i]+'</td><td>'+line+extra+'<div style="color:var(--muted);font-size:11.5px;margin-top:2px">'+x.cardio+'</div></td></tr>';
+  });
+  document.getElementById("weekBody").innerHTML=rows;
+
+  var g=new Date();
+  document.getElementById("genstamp").textContent="เปิดดูล่าสุด "+g.getDate()+" "+months[g.getMonth()]+" "+(g.getFullYear()+543);
+})();
+</script>
+</body>
+</html>
