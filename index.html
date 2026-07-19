@@ -195,6 +195,35 @@ h2{font-size:18px;font-weight:500;color:var(--gold);border-left:3px solid var(--
 </section>
 
 <section>
+  <h2>🔔 ศูนย์รวมเตือนรายวัน — Daily Brief</h2>
+  <div class="h2sub">รวมการเตือนทุกอย่างไว้จุดเดียว → Eve ส่งบรีฟทาง <b style="color:var(--gold)">LINE ทุกวัน 07:30 น.</b> (เช็คลิสต์ของวันนั้น + นับถอยหลังวันสำคัญ) · แก้/เพิ่มรายการที่ไฟล์เดียว <code style="background:#26251f;padding:1px 7px;border-radius:5px">EVE-REMINDERS.json</code> · ยุบมาจาก LINE reminder 4 ตัว + task ค้าง 11 ตัว ให้เหลือจุดเดียว (19 ก.ค. 2026)</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:10px">
+    <div style="background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:12px 14px">
+      <div style="font-weight:600;color:var(--ink)">🎓 PhD Checklist</div>
+      <div style="font-size:12px;color:var(--ink3);margin-top:2px">ทุกอังคาร · 10:30</div>
+      <div style="font-size:12.5px;color:var(--ink2);margin-top:6px">Research Design (08:00–09:00) · ส่งงาน Research Design · Present Topic <span style="color:var(--gold)">· นับถอยหลังถึง 6 ต.ค.</span></div>
+    </div>
+    <div style="background:var(--card2);border:1px solid var(--line);border-left:3px solid #2dd4bf;border-radius:10px;padding:12px 14px">
+      <div style="font-weight:600;color:var(--ink)">🥤 Bobbi Checklist</div>
+      <div style="font-size:12px;color:var(--ink3);margin-top:2px">ทุกอังคาร · 14:00</div>
+      <div style="font-size:12.5px;color:var(--ink2);margin-top:6px">สรุป NPD 4 SKU (ส่วนผสม + วันวางขาย) · แผนเข้า 7-11</div>
+    </div>
+    <div style="background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:12px 14px">
+      <div style="font-weight:600;color:var(--ink)">🌵 David Days Checklist</div>
+      <div style="font-size:12px;color:var(--ink3);margin-top:2px">ทุกศุกร์ · 10:30</div>
+      <div style="font-size:12.5px;color:var(--ink2);margin-top:6px">CJ Express · Watsons · Tops · 7-Eleven <span style="color:var(--ink3)">(รายละเอียดส่งทาง LINE)</span></div>
+    </div>
+    <div style="background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--info);border-radius:10px;padding:12px 14px">
+      <div style="font-weight:600;color:var(--ink)">🎓 เลือกอาจารย์ที่ปรึกษา PhD</div>
+      <div style="font-size:12px;color:var(--ink3);margin-top:2px">เสาร์ 24 ต.ค. 2026 · 15:00</div>
+      <div style="font-size:12.5px;color:var(--ink2);margin-top:6px">เตรียมเลือก อ.เอ (ดร.สุทธินันท์) · <b style="color:var(--info)" id="advisorDays">—</b></div>
+    </div>
+  </div>
+  <div class="note">หน้านี้เป็นเว็บสาธารณะ — แสดงเฉพาะหัวข้อ+เวลา · ตัวเลข/ข้อมูลภายใน (เช่น การเงิน) ส่งทาง LINE ส่วนตัวเท่านั้น</div>
+  <script>(function(){try{var t=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Bangkok'}));var e=new Date(2026,9,24,15,0,0);var d=Math.ceil((e-t)/864e5);var el=document.getElementById('advisorDays');if(el)el.textContent=d>0?('อีก '+d+' วัน'):(d===0?'วันนี้!':'ผ่านแล้ว');}catch(_){}})();</script>
+</section>
+
+<section>
   <h2>เช็คลิสต์สัปดาห์นี้</h2>
   <div class="h2sub" id="weekrange">—</div>
   <div class="week" id="week"></div>
