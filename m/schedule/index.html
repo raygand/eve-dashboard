@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="th"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<title>EVE Command Center (Mobile)</title>
+<script type="application/json" id="cowork-artifact-meta">{"id":"eve-schedule-dashboard-mobile","title":"EVE Command Center · Mobile","description":"ศูนย์บัญชาการตารางยิงงานอัตโนมัติ 11 งาน · Daily Brief · ปฏิทิน · Timeline 45 วัน · Mailbox · กติกา","updated":"2026-07-19"}</script>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="EVE CMD">
+<meta name="theme-color" content="#0E0E10">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><rect width='180' height='180' rx='40' fill='#C9A961'/><text x='50%25' y='55%25' font-size='92' font-family='Arial' font-weight='bold' fill='%23141414' text-anchor='middle' dominant-baseline='central'>E</text></svg>">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='14' fill='#C9A961'/><text x='50%25' y='56%25' font-size='34' font-family='Arial' font-weight='bold' fill='%23141414' text-anchor='middle' dominant-baseline='central'>E</text></svg>">
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22EVE%20CMD%22%2C%22short_name%22%3A%22EVE%20CMD%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230E0E10%22%2C%22theme_color%22%3A%22%230E0E10%22%2C%22scope%22%3A%22.%22%2C%22start_url%22%3A%22.%22%7D">
+<style>
+:root{--accent:#C9A961;--accent2:#E0C67E;--bg:#0E0E10;--panel:#17171B;--panel2:#1F1F26;--line:#2A2A32;--ink:#F3F1EC;--mut:#9A968C;--nav:60px;--sb:env(safe-area-inset-bottom);--st:env(safe-area-inset-top)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Thai",sans-serif;-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.5;padding-bottom:calc(var(--nav) + var(--sb) + 16px);overscroll-behavior-y:none}
+.appbar{position:sticky;top:0;z-index:20;background:rgba(14,14,16,.85);backdrop-filter:saturate(160%) blur(14px);-webkit-backdrop-filter:saturate(160%) blur(14px);border-bottom:1px solid var(--line);padding:calc(var(--st) + 10px) 14px 10px;display:flex;align-items:center;gap:11px}
+.appbar .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#141414;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.appbar h1{font-size:16px;margin:0;font-weight:750;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appbar .sub{font-size:11px;color:var(--mut);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appbar .hd{flex:1;min-width:0}
+.topbtn{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:16px;cursor:pointer}
+.wrap{max-width:600px;margin:0 auto;padding:14px 14px 10px}
+.a2hs{margin:0 2px 16px;background:linear-gradient(135deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:11px 13px;font-size:12.5px;color:var(--mut);display:flex;gap:10px;align-items:center}
+.a2hs b{color:var(--ink);font-weight:700}.a2hs .ic{font-size:18px}.a2hs .x{margin-left:auto;color:var(--mut);font-size:20px;padding:2px 6px;cursor:pointer;line-height:1}
+.sec{scroll-margin-top:64px;margin-bottom:22px}
+.sec-h{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin:4px 4px 11px}
+.sec-h .n{margin-left:auto;color:var(--mut);font-weight:700;font-size:11px;text-transform:none;letter-spacing:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 15px;margin-bottom:11px}
+.card.tap{cursor:pointer;transition:transform .12s,background .15s;position:relative}
+.card.tap:active{transform:scale(.985);background:var(--panel2)}
+.row{display:flex;align-items:center;gap:11px}
+.row .grow{flex:1;min-width:0}
+.tt{font-size:15px;font-weight:700;letter-spacing:.2px}
+.mut{color:var(--mut)}.sm{font-size:12.5px}.xs{font-size:11px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:750;padding:3px 10px;border-radius:20px;background:var(--panel2);border:1px solid var(--line);color:var(--mut);white-space:nowrap}
+.pill.acc{background:color-mix(in srgb,var(--accent) 20%,transparent);border-color:color-mix(in srgb,var(--accent) 45%,transparent);color:var(--ink)}
+.dot{width:9px;height:9px;border-radius:50%;flex:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}
+.stat .v{font-size:22px;font-weight:800;letter-spacing:.3px}.stat .k{font-size:11.5px;color:var(--mut);margin-top:2px}
+.detail{display:none;margin-top:11px;padding-top:12px;border-top:1px dashed var(--line);font-size:13px;color:var(--mut);line-height:1.6}
+.card.open .detail{display:block}
+.card.tap .chev{position:absolute;right:14px;top:14px;color:var(--mut);transition:transform .2s}.card.open .chev{transform:rotate(180deg)}
+.swatch{height:74px;border-radius:12px;display:flex;align-items:flex-end;padding:8px 10px;cursor:pointer;position:relative}
+.swatch .cc{font-size:10px;font-weight:700;background:rgba(0,0,0,.25);border-radius:5px;padding:2px 7px}
+.hex{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.3px}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;height:calc(var(--nav) + var(--sb));padding-bottom:var(--sb);background:rgba(18,18,22,.93);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex}
+.tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:9.5px;color:var(--mut);text-decoration:none;font-weight:650;letter-spacing:.2px;min-width:0;padding:0 2px}
+.tabbar a .ic{font-size:19px;line-height:1}
+.tabbar a.on{color:var(--accent)}
+.tabbar a span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.btn{display:flex;align-items:center;justify-content:center;gap:7px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#141414;border:0;border-radius:13px;padding:13px 16px;font-size:14px;font-weight:800;cursor:pointer;width:100%;margin-top:2px}
+.sep{height:1px;background:var(--line);margin:12px 0;border:0}
+footer{color:var(--mut);font-size:11.5px;line-height:1.6;text-align:center;padding:14px 6px 4px;border-top:1px solid var(--line);margin-top:8px}
+#toast{position:fixed;left:50%;bottom:calc(var(--nav) + var(--sb) + 18px);transform:translateX(-50%) translateY(16px);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#141414;font-weight:800;font-size:13px;padding:11px 20px;border-radius:24px;opacity:0;transition:.25s;pointer-events:none;z-index:40;box-shadow:0 6px 20px rgba(0,0,0,.4)}#toast.on{opacity:1;transform:translateX(-50%)}
+</style></head>
+<body>
+<div class="appbar"><div class="logo">E</div><div class="hd"><h1>EVE Command Center</h1><div class="sub">ศูนย์บัญชาการ · ตารางยิงงาน</div></div><button class="topbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button></div>
+<div class="wrap">
+<div class="a2hs" id="a2hs"><span class="ic">📲</span><div>เปิดได้ตลอดเหมือนแอป — <b>แชร์ → เพิ่มลงในหน้าจอโฮม</b></div><span class="x" onclick="this.parentNode.remove()">×</span></div>
+
+<!-- ==================== BRIEF ==================== -->
+<section class="sec" id="brief">
+  <div class="sec-h"><span>🔔 วันนี้ · Daily Brief</span><span class="n">ศูนย์รวมเตือน</span></div>
+
+  <div class="card" style="border-color:color-mix(in srgb,#22c55e 42%,transparent)">
+    <div class="tt" style="font-size:13.5px;color:#22c55e">✅ สัปดาห์นี้รันสำเร็จครบทุกงาน</div>
+    <div class="sm mut" style="margin-top:6px">จ.13 Stock MT · อ.14 KU week_3 (14 ไฟล์) · พ.15 Grand Monthly + Cashflow · พฤ.16 Stock EC</div>
+    <div class="sm" style="margin-top:8px">🆕 <b style="color:var(--accent)">งานที่ 12: EVE MAILBOX</b> เปิดใช้ 16 ก.ค. — สแกนทุกชั่วโมง 07:00–23:00</div>
+  </div>
+
+  <div class="mut sm" style="margin:2px 4px 12px;line-height:1.65">รวมการเตือนทุกอย่างไว้จุดเดียว → Eve ส่งบรีฟทาง <b style="color:var(--accent)">LINE ทุกเช้า ~07:05 น.</b> (เช็คลิสต์ของวันนั้น + นับถอยหลังวันสำคัญ) · แก้/เพิ่มที่ไฟล์เดียว <code style="background:var(--panel2);padding:1px 6px;border-radius:5px">EVE-REMINDERS.json</code> · ยุบจาก LINE reminder 4 + task ค้าง 11 ให้เหลือจุดเดียว (19 ก.ค. 2026)</div>
+
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <div class="tt" style="font-size:14px">🎓 PhD Checklist</div>
+    <div class="xs mut" style="margin-top:2px">ทุกอังคาร · 10:30</div>
+    <div class="sm" style="margin-top:7px">Research Design (08:00–09:00) · ส่งงาน Research Design · Present Topic <span style="color:var(--accent)">· นับถอยหลังถึง 6 ต.ค.</span></div>
+  </div>
+  <div class="card" style="border-left:3px solid #2dd4bf">
+    <div class="tt" style="font-size:14px">🥤 Bobbi Checklist</div>
+    <div class="xs mut" style="margin-top:2px">ทุกอังคาร · 14:00</div>
+    <div class="sm" style="margin-top:7px">สรุป NPD 4 SKU (ส่วนผสม + วันวางขาย) · แผนเข้า 7-11</div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <div class="tt" style="font-size:14px">🌵 David Days Checklist</div>
+    <div class="xs mut" style="margin-top:2px">ทุกศุกร์ · 10:30</div>
+    <div class="sm" style="margin-top:7px">CJ Express · Watsons · Tops · 7-Eleven <span class="mut">(รายละเอียดส่งทาง LINE)</span></div>
+  </div>
+  <div class="card" style="border-left:3px solid #60a5fa">
+    <div class="tt" style="font-size:14px">🎓 เลือกอาจารย์ที่ปรึกษา PhD</div>
+    <div class="xs mut" style="margin-top:2px">เสาร์ 24 ต.ค. 2026 · 15:00</div>
+    <div class="sm" style="margin-top:7px">เตรียมเลือก อ.เอ (ดร.สุทธินันท์) · <b style="color:#60a5fa" id="advisorDays">—</b></div>
+  </div>
+  <div class="mut xs" style="margin:6px 4px 0;line-height:1.65">หน้านี้เป็นเว็บสาธารณะ — แสดงเฉพาะหัวข้อ+เวลา · ตัวเลข/ข้อมูลภายใน (เช่น การเงิน) ส่งทาง LINE ส่วนตัวเท่านั้น</div>
+
+  <div class="sec-h" style="margin-top:20px"><span>📅 เช็คลิสต์สัปดาห์นี้</span><span class="n" id="weekrange">—</span></div>
+  <div id="week"></div>
+  <div class="mut xs" style="margin:2px 4px 0;line-height:1.65">☑︎ ช่อง "ตรวจเมลแล้ว" ใช้ติ๊กระหว่างเปิดหน้านี้ (รีเฟรชแล้วรีเซ็ต — สถานะรัน ✅ คำนวณอัตโนมัติจากตารางเวลาเสมอ)</div>
+</section>
+
+<!-- ==================== TASKS ==================== -->
+<section class="sec" id="tasks">
+  <div class="sec-h"><span>📋 งาน · 11 งานอัตโนมัติ</span><span class="n">แตะการ์ดดู detail</span></div>
+  <div class="mut sm" style="margin:2px 4px 10px;line-height:1.65">เรียงตามความถี่ · เส้นซ้าย = หมวดความถี่ · ทุกงานส่งอีเมลจริง From <b style="color:var(--ink)">drraygand@gmail.com</b> → To <b style="color:var(--ink)">pichitjai@full-plan.com</b> เท่านั้น</div>
+  <div id="taskchips" style="display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;-webkit-overflow-scrolling:touch"></div>
+  <div id="taskcards"></div>
+</section>
+
+<!-- ==================== CALENDAR ==================== -->
+<section class="sec" id="calendar">
+  <div class="sec-h"><span>🗓️ ปฏิทินการยิงงาน</span><span class="n" id="calmonth">—</span></div>
+  <div class="mut sm" style="margin:2px 4px 10px;line-height:1.65">จุดสี = งานที่รันวันนั้น (สีตามหมวด) · กรอบทอง = วันนี้ · W# = สัปดาห์ KU</div>
+  <div class="card" id="cal" style="padding:12px 10px"></div>
+  <div id="callegend" style="display:flex;flex-wrap:wrap;gap:11px;margin:10px 4px 0"></div>
+
+  <div class="sec-h" style="margin-top:22px"><span>🧭 Timeline 45 วันข้างหน้า</span><span class="n" id="tlrange">—</span></div>
+  <div id="tl"></div>
+
+  <div class="sec-h" style="margin-top:22px"><span>📆 ภาพทั้งปี 2569</span><span class="n">จุด = มีรอบรัน</span></div>
+  <div class="mut xs" style="margin:2px 4px 10px;line-height:1.65">งานไหนแตะเดือนไหน · คอลัมน์ทอง = เดือนปัจจุบัน</div>
+  <div id="year"></div>
+</section>
+
+<!-- ==================== MAILBOX ==================== -->
+<section class="sec" id="mailbox">
+  <div class="sec-h"><span>📬 EVE Mailbox · สถานะเมล</span><span class="n">อัตโนมัติทุกชม.</span></div>
+  <div class="card">
+    <div class="sm">ส่งเมล/fwd → <b style="color:var(--accent)">eve@full-plan.com</b></div>
+    <div class="xs mut" style="margin-top:6px;line-height:1.7">คำสั่งบรรทัดแรก: <code style="background:var(--panel2);padding:1px 6px;border-radius:5px">ถึง Eve: …</code> หรือ <code style="background:var(--panel2);padding:1px 6px;border-radius:5px">job: ชื่องาน …</code> · ตอบกลับทางอีเมลเสมอ (ธีมสีตามแบรนด์)</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:11px">
+    <div class="stat"><div class="v" id="mbDone" style="color:#22c55e">—</div><div class="k">ประมวลผลแล้ว</div></div>
+    <div class="stat"><div class="v" id="mbPend" style="color:#f59e0b">—</div><div class="k">pending</div></div>
+    <div class="stat"><div class="v" id="mbErr">—</div><div class="k">error</div></div>
+  </div>
+  <div class="card" style="border-color:color-mix(in srgb,var(--accent) 42%,transparent)">
+    <div class="row" style="justify-content:space-between;gap:8px"><span class="sm mut">สแกนอัตโนมัติรอบถัดไป</span><span class="tt" style="font-size:14px;color:var(--accent);text-align:right" id="mbNext">—</span></div>
+    <div class="xs mut" style="margin-top:6px;line-height:1.6">ทุกชั่วโมง นาทีที่ :06 (07:00–23:00) · ด่วน = พิมพ์ "เช็คเมล" ในแชท</div>
+  </div>
+  <div class="sec-h" style="margin-top:16px"><span>📨 ประวัติเมลสั่งงาน</span><span class="n">2 รายการ</span></div>
+  <div id="mbList"></div>
+  <div class="mut xs" style="margin:4px 4px 0;line-height:1.65">แหล่งข้อมูล: EVE-MAILBOX-LOG.json บน Drive (งานรายชั่วโมง append อัตโนมัติ) — snapshot ณ เวลาที่ Eve อัปเดตล่าสุด · อยากได้ตัวเลขสด พิมพ์ "อัปเดต dashboard" ในแชท</div>
+</section>
+
+<!-- ==================== RULES ==================== -->
+<section class="sec" id="rules">
+  <div class="sec-h"><span>📖 กติกาของระบบ</span><span class="n">อ่านครั้งเดียวจำตลอด</span></div>
+  <div class="card"><div class="sm" style="line-height:1.7"><b style="color:var(--accent)">SKILL.md = แหล่งความจริง</b> — ทุกงานอ่าน <i>Scheduled/&lt;task&gt;/SKILL.md</i> เวอร์ชันล่าสุดก่อนเริ่มเสมอ อยากแก้พฤติกรรมงาน แก้ที่ SKILL.md ไม่ต้องแตะ cron</div></div>
+  <div class="card"><div class="sm" style="line-height:1.7"><b style="color:var(--accent)">GUARD run-once</b> — งานที่ cron ยิงหลายวัน (เช่น 15–19) จะทำจริงแค่รอบแรกของหน้าต่าง รอบถัดไป = VERIFY-ONLY ไม่ส่งซ้ำ</div></div>
+  <div class="card"><div class="sm" style="line-height:1.7"><b style="color:var(--accent)">อีเมล</b> — ส่งจริง (ไม่ใช่ draft) จาก drraygand@gmail.com → pichitjai@full-plan.com เท่านั้น ไม่มี Cc · ระบบไม่ส่งอะไรไปหาบุคคลภายนอก/มหาวิทยาลัย/คู่ค้าแทนเด็ดขาด</div></div>
+  <div class="card"><div class="sm" style="line-height:1.7"><b style="color:var(--accent)">เวลา</b> — cron ตั้งเป็น UTC · ไทย = UTC+7 · เวลาที่แสดงในหน้านี้เป็นเวลาไทยทั้งหมด · งานจะเริ่มส่งเมลจริง ~30–45 นาทีหลังยิง (cold start + build)</div></div>
+  <div class="card"><div class="sm" style="line-height:1.7"><b style="color:var(--accent)">วันหยุด</b> — งานที่มีหน้าต่างหลายวัน (stock MT จ–พ, Grand 15–19, EC 1–5/16–20, Promo 5–9) เลื่อนไปวันทำการถัดไปอัตโนมัติ</div></div>
+  <div class="card"><div class="sm" style="line-height:1.7"><b style="color:var(--accent)">KU</b> — คอร์สถึง week_15 (อ. 6 ต.ค. 2569) · เอกสารห้ามมีบรรทัดแจ้งการใช้ AI · week_1/2 = แม่แบบอ้างอิง</div></div>
+  <div class="mut xs" style="margin:10px 4px 0;line-height:1.65;text-align:center">EVE Command Center v2 · +📬 Mailbox Status · อัปเดตข้อมูล ณ ศ. 17 ก.ค. 2569 10:52 ICT · ทะเบียนงานตรวจแล้ว = 11 งาน · สถานะ/countdown คำนวณสดเสมอ</div>
+</section>
+
+<script>
+/* ===== DATA (copied verbatim from desktop eve-schedule-dashboard.html) ===== */
+const CAT={week:{n:'รายสัปดาห์',c:'#0284c7'},half:{n:'เดือนละ 2 ครั้ง',c:'#8b5cf6'},month:{n:'รายเดือน',c:'#ec4899'},quart:{n:'รายไตรมาส',c:'#ea580c'},bi:{n:'ปีละ 2 ครั้ง',c:'#0d9488'}};
+const TH_D=['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
+const TH_M=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const TH_MF=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const KU_W3=new Date(2026,6,14); // week_3 anchor (Tue 14 Jul 2026)
+function fw(y,m,day){let d=new Date(y,m,day);while(d.getDay()==0||d.getDay()==6)d.setDate(d.getDate()+1);return d;} // first working day >= day
+function sameD(a,b){return a.getFullYear()==b.getFullYear()&&a.getMonth()==b.getMonth()&&a.getDate()==b.getDate();}
+function kuWeek(d){return Math.round((d-KU_W3)/(7*864e5))+3;}
+const TASKS=[
+{id:'stockmt',nm:'Weekly Stock — Modern Trade',cat:'week',icon:'📦',time:'10:35',
+ occ:(d)=>d.getDay()==1,
+ win:'cron จ–พ 10:30 · รันจริงวันจันทร์ (จันทร์หยุด → อ./พ.)',
+ deliver:'Excel 67-SKU (สี 12 เดือน, โซน IN/OUT, แถบสรุปทอง) + PDF black-gold Kanit (เฉพาะรายการเคลื่อนไหว) เทียบไฟล์สัปดาห์ก่อน · สแกน PO/CN/Inbound จาก Drive',
+ mail:'แนบ Excel + PDF · อัป Drive week folder',skill:'david-days-weekly-stock-mt-report',
+ note:'ล่าสุด: จ. 13 ก.ค. ✅ · ถัดไป จ. 20 ก.ค.'},
+{id:'ku',nm:'KU Weekly Article Prep (ป.เอก)',cat:'week',icon:'🎓',time:'10:37',
+ occ:(d)=>{if(d.getDay()!=2)return false;const w=kuWeek(d);return w>=3&&w<=15;},
+ win:'ทุกอังคาร 10:37 · ถึง week_15 (6 ต.ค. 2569)',
+ deliver:'InfoMatrix กรอกครบ 5 บทความ (วิจัยไทย 2 + วิจัย EN 1 + วิชาการไทย 1 + วิชาการ EN 1) docx+pdf · บทความ EN ใช้ English template เต็มรูปแบบ (v5) · + สรุปเตรียมพรีเซนละเอียด (ฝังไฮไลต์+ลิงก์ดาวน์โหลด) + ดัชนี → โฟลเดอร์ week_N · เลขบทความต่อเนื่อง (week_3 = 11–15) · ❌ ไม่มีบรรทัด AI',
+ mail:'แนบสรุปละเอียด PDF + ดัชนี PDF + ลิงก์โฟลเดอร์',skill:'ku-weekly-article-prep (SKILL v5)',
+ note:'week_3 สำเร็จ ✅ (14 ก.ค., 14 ไฟล์) · ถัดไป week_4 (21 ก.ค.)'},
+{id:'stockec',nm:'Stock E-Commerce Monitor',cat:'half',icon:'🛒',time:'10:38',
+ occ:(d)=>{const a=fw(d.getFullYear(),d.getMonth(),1),b=fw(d.getFullYear(),d.getMonth(),16);return sameD(d,a)||sameD(d,b);},
+ win:'วันที่ 1 และ 16 (หน้าต่าง 1–5 / 16–20 เลื่อนวันหยุด)',
+ deliver:'CEO dashboard สต๊อกอีคอมเมิร์ซ: PDF + Excel (Shopee / Lazada / TikTok Shop) ระดับสต๊อก-การเคลื่อนไหว-จุดเตือนเติมของ',
+ mail:'แนบ PDF + Excel',skill:'david-days-stock-ec-monitor',
+ note:'ล่าสุด: พฤ. 16 ก.ค. ✅ · ถัดไป 3 ส.ค. (1 ส.ค. = เสาร์)'},
+{id:'promo',nm:'MT Promotion Dashboard',cat:'month',icon:'🏷️',time:'10:30',
+ occ:(d)=>sameD(d,fw(d.getFullYear(),d.getMonth(),5)),
+ win:'วันที่ 5 ของเดือน (หน้าต่าง 5–9 เลื่อนวันหยุด)',
+ deliver:'Dashboard โปรโมชัน Modern Trade 3 ชิ้น (FINAL design) — สถานะโปรต่อร้าน Watsons/Boots/The Mall/Tops, ไทม์ไลน์แคมเปญ, งบ trade spending',
+ mail:'แนบครบชุด',skill:'david-days-promotion-dashboard',
+ note:'เดือนนี้ผ่านแล้ว (5 ก.ค.) · ถัดไป พ. 5 ส.ค.'},
+{id:'grand',nm:'Grand Monthly Report v2 (full-margin)',cat:'month',icon:'📊',time:'10:37',
+ occ:(d)=>sameD(d,fw(d.getFullYear(),d.getMonth(),15)),
+ win:'วันที่ 15 (หน้าต่าง 15–19 · เสาร์อาทิตย์ → วันทำการถัดไป)',
+ deliver:'รายงานประจำเดือน N-1 ฉบับเต็ม: ยอดขายทุกช่องทาง (MT + EC + Shopee Agent + International), margin เต็มโครงสร้าง, กติกาสี + ตัวเลขติดลบสีแดง',
+ mail:'แนบรายงาน · อัปโฟลเดอร์ Grand monthly report/ปี/เดือน',skill:'david-days-grand-monthly-report-v2',
+ note:'รอบ ก.ค. สำเร็จ ✅ (15 ก.ค. — รายงานเดือน มิ.ย.)'},
+{id:'cash',nm:'Cashflow Report (Net Incl-VAT)',cat:'month',icon:'💰',time:'11:07',
+ occ:(d)=>sameD(d,fw(d.getFullYear(),d.getMonth(),15)),
+ win:'วันที่ 15 · 11:07 (รันต่อจาก Grand ครึ่งชั่วโมง)',
+ deliver:'Cashflow สุทธิรวม VAT เดือน N-1 (งวดเดียวกับ Grand): กระแสเข้า-ออก, International, trade-spend ครบ, ติดลบสีแดง — ชื่อโฟลเดอร์/ไฟล์/หัวเรื่องใช้เดือน N-1',
+ mail:'แนบรายงาน',skill:'david-days-cashflow-report',
+ note:'รอบ ก.ค. สำเร็จ ✅ (15 ก.ค. คู่ Grand)'},
+{id:'ceo',nm:'CEO Board & Road-to-IPO Review',cat:'month',icon:'👑',time:'11:03',
+ occ:(d)=>d.getDate()==20,
+ win:'วันที่ 20 ทุกเดือน (cron ยิงตรงวัน — ถ้าตรงเสาร์อาทิตย์ SKILL จัดการภายใน)',
+ deliver:'ชุดบอร์ด 3 ชิ้น gold-on-black ฟอนต์ Kanit: PDF dashboard 10 หน้า + PPTX 12 สไลด์ + Excel scorecard 8 ชีต — อ่านจากรายงานต้นทาง 7 ฉบับ, NPD/product radar, road-to-IPO milestones',
+ mail:'แนบครบ 3 ไฟล์ · อัป CEO guideline folder',skill:'david-days-ceo-board-ipo-review',
+ note:'รอบถัดไป: จ. 20 ก.ค.'},
+{id:'marine',nm:'Marine Education Dashboard 🌸',cat:'bi',icon:'👧',time:'09:08',
+ occ:(d)=>(d.getMonth()==6||d.getMonth()==11)&&d.getDate()==30,
+ win:'30 ก.ค. (ผลปลายปี+ค่าเทอมใหม่) และ 30 ธ.ค. (เทอม 1)',
+ deliver:'Education & Finance command center ของน้อง Marine (ธีมชมพู สองภาษา): HTML interactive + PDF หลายหน้า + Excel — ค่าเทอมจ่ายจริง vs ราคาประกาศ, ส่วนลด, ประกัน, Medeze, ผลเรียน NWEA MAP + KPIS, projection ถึง ป.เอก, แผนออม, ไทม์ไลน์ milestone',
+ mail:'ส่ง 3 ไฟล์ + dup-guard ~6 สัปดาห์',skill:'marine-dashboard-dec (ตัวเดียว ครอบ ก.ค.+ธ.ค.)',
+ note:'รอบถัดไป: พฤ. 30 ก.ค. 09:08'},
+{id:'vapor',nm:'Vapor Education Dashboard',cat:'bi',icon:'👦',time:'09:00',
+ occ:(d)=>(d.getMonth()==6||d.getMonth()==11)&&d.getDate()==30,
+ win:'30 ก.ค. และ 30 ธ.ค. (คู่กับ Marine)',
+ deliver:'Command center ของน้อง Vapor (ธีม vivid, ฟอนต์ใหญ่): HTML + PDF + Excel โครงเดียวกับ Marine — จ่ายจริง/ผลเรียน/projection ถึง ป.เอก/แผนออม/milestone',
+ mail:'ส่ง 3 ไฟล์ + dup-guard',skill:'vapor-dashboard-dec (ตัวเดียว ครอบ ก.ค.+ธ.ค.)',
+ note:'รอบถัดไป: พฤ. 30 ก.ค. 09:00 (ก่อน Marine 8 นาที)'},
+{id:'compval',nm:'Company Value Quarterly',cat:'quart',icon:'💎',time:'11:00',
+ occ:(d)=>[0,3,6,9].includes(d.getMonth())&&d.getDate()==30,
+ win:'วันที่ 30 ของ ม.ค. / เม.ย. / ก.ค. / ต.ค.',
+ deliver:'รายงานมูลค่าบริษัท CACTUSMAN/David Days รายไตรมาส: SWOT + EBITDA + Valuation (PDF + Excel)',
+ mail:'แนบ PDF + Excel',skill:'company-value-quarterly',
+ note:'รอบถัดไป: พฤ. 30 ก.ค. (วันเดียวกับ dashboard ลูกทั้งสอง — เช้าลูก สายบริษัท)'},
+{id:'tm',nm:'Trademark Renewal Monitor',cat:'quart',icon:'®️',time:'11:08',
+ occ:(d)=>[0,3,6,9].includes(d.getMonth())&&d.getDate()==1,
+ win:'วันที่ 1 ของ ม.ค. / เม.ย. / ก.ค. / ต.ค.',
+ deliver:'สถานะเครื่องหมายการค้ารายประเทศ + เตือนกำหนดต่ออายุล่วงหน้า + ค่าธรรมเนียม',
+ mail:'สรุปสถานะ + รายการใกล้หมดอายุ',skill:'trademark',
+ note:'ไตรมาสนี้ผ่านแล้ว (1 ก.ค.) · ถัดไป พฤ. 1 ต.ค.'}
+];
+const MAILLOG=[
+ {ts:"16 ก.ค. 18:06",from:"drraygand (demo)",subj:"Fwd: [EVE-TEST] ใบเสนอราคา กระปุก Pomade 5,000 ชิ้น",cmd:"สรุป + ร่างตอบ",theme:"David Days",tc:"#d4af37",st:"done",reply:"[EVE ตอบกลับ] สรุป+ร่างตอบใบเสนอราคา (18:26)"},
+ {ts:"16 ก.ค. 18:47",from:"Pichitjai@full-plan.com",subj:"Test",cmd:"ทดสอบระบบ",theme:"David Days",tc:"#d4af37",st:"done",reply:"[EVE ตอบกลับ] ระบบ LIVE ✅ (19:00)"}
+];
+
+/* ===== HELPERS (mobile render) ===== */
+var FILTER='all';
+function now(){return new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Bangkok'}));}
+function fireDT(t,d){var p=t.time.split(':');var x=new Date(d);x.setHours(+p[0],+p[1],0,0);return x;}
+function occON(d){return TASKS.filter(function(t){return t.occ(d);});}
+function thDate(d,full){return TH_D[d.getDay()]+' '+d.getDate()+' '+(full?TH_MF:TH_M)[d.getMonth()]+' '+(d.getFullYear()+543);}
+function nextFires(n,days){var out=[];for(var i=0;i<days;i++){var d=new Date(n.getFullYear(),n.getMonth(),n.getDate()+i);occON(d).forEach(function(t){var f=fireDT(t,d);if(f>n)out.push({t:t,f:f});});}return out.sort(function(a,b){return a.f-b.f;});}
+function cdTxt(ms){var s=Math.floor(ms/1000),d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);if(d>0)return 'อีก '+d+' วัน '+h+' ชม.';if(h>0)return 'อีก '+h+' ชม. '+m+' นาที';return 'อีก '+m+' นาที';}
+function setTxt(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+/* ===== DAILY BRIEF: advisor countdown ===== */
+function updAdvisor(){var el=document.getElementById('advisorDays');if(!el)return;var t=now();var e=new Date(2026,9,24,15,0,0);var d=Math.ceil((e-t)/864e5);el.textContent=d>0?('อีก '+d+' วัน'):(d===0?'วันนี้!':'ผ่านแล้ว');}
+
+/* ===== WEEK CHECKLIST ===== */
+function renderWeek(){
+  var n=now();
+  var wkS=new Date(n);wkS.setDate(n.getDate()-((n.getDay()+6)%7));wkS.setHours(0,0,0,0);
+  var wkEnd=new Date(wkS.getFullYear(),wkS.getMonth(),wkS.getDate()+6);
+  setTxt('weekrange','จ. '+wkS.getDate()+' '+TH_M[wkS.getMonth()]+' – อา. '+wkEnd.getDate()+' '+TH_M[wkEnd.getMonth()]);
+  var html='';
+  for(var i=0;i<7;i++){
+    var d=new Date(wkS.getFullYear(),wkS.getMonth(),wkS.getDate()+i);
+    var jobs=occON(d);
+    if(!jobs.length)continue;
+    jobs.forEach(function(t){
+      var f=fireDT(t,d);var isToday=sameD(d,n);var st;
+      if(f<=n)st='<span class="pill" style="background:rgba(34,197,94,.15);border-color:transparent;color:#22c55e">✅ รันแล้ว</span>';
+      else if(isToday)st='<span class="pill" style="background:rgba(245,158,11,.15);border-color:transparent;color:#f59e0b">🔥 วันนี้ '+t.time+'</span>';
+      else st='<span class="pill acc">⏳ '+cdTxt(f-n)+'</span>';
+      var kuLbl=t.id=='ku'?' · week_'+kuWeek(d):'';
+      html+='<div class="card" style="padding:11px 13px'+(isToday?';border-color:var(--accent)':'')+';border-left:3px solid '+CAT[t.cat].c+'">'
+        +'<div class="row" style="align-items:flex-start">'
+          +'<div style="flex:none;width:38px;text-align:center">'
+            +'<div class="tt" style="font-size:16px;line-height:1.1;color:'+(isToday?'var(--accent)':'var(--ink)')+'">'+d.getDate()+'</div>'
+            +'<div class="xs mut">'+TH_D[d.getDay()]+'</div>'
+          +'</div>'
+          +'<div class="grow">'
+            +'<div class="sm" style="font-weight:700">'+esc(t.icon+' '+t.nm)+kuLbl+'</div>'
+            +'<div class="xs mut" style="margin-top:2px">'+t.time+' น. · '+esc(t.win)+'</div>'
+            +'<div style="margin-top:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">'+st
+              +'<label class="xs mut" style="display:inline-flex;align-items:center;gap:5px"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--accent)" onchange="this.parentNode.style.color=this.checked?\'#22c55e\':\'\'">ตรวจเมลแล้ว</label>'
+            +'</div>'
+          +'</div>'
+        +'</div>'
+      +'</div>';
+    });
+  }
+  var box=document.getElementById('week');if(box)box.innerHTML=html||'<div class="card mut sm">สัปดาห์นี้ไม่มีงานตามตาราง</div>';
+}
+
+/* ===== TASK FILTER CHIPS ===== */
+function chipEl(cat,label,color){
+  var on=FILTER===cat;var cc=color||'var(--accent)';
+  var dot=color?'<span style="width:8px;height:8px;border-radius:50%;background:'+color+';flex:none"></span>':'';
+  var style='display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex:none;font-size:12.5px;font-weight:700;padding:11px 15px;border-radius:22px;cursor:pointer;font-family:inherit;'
+    +(on?('border:1px solid '+cc+';background:color-mix(in srgb,'+cc+' 22%,transparent);color:var(--ink)'):'border:1px solid var(--line);background:var(--panel);color:var(--mut)');
+  return '<button onclick="setF(\''+cat+'\')" style="'+style+'">'+dot+label+'</button>';
+}
+function renderChips(){
+  var h=chipEl('all','ทั้งหมด',null);
+  for(var k in CAT)h+=chipEl(k,CAT[k].n,CAT[k].c);
+  var box=document.getElementById('taskchips');if(box)box.innerHTML=h;
+}
+function setF(cat){
+  FILTER=cat;renderChips();
+  var cards=document.querySelectorAll('#taskcards > [data-cat]');
+  for(var i=0;i<cards.length;i++){var c=cards[i].getAttribute('data-cat');cards[i].style.display=(cat==='all'||c===cat)?'':'none';}
+}
+
+/* ===== TASK CARDS ===== */
+function renderTasks(){
+  var n=now();var order=['week','half','month','quart','bi'];
+  var list=TASKS.slice().sort(function(a,b){return order.indexOf(a.cat)-order.indexOf(b.cat);});
+  var fires=nextFires(n,400);
+  var h='';
+  list.forEach(function(t){
+    var nf=null;for(var i=0;i<fires.length;i++){if(fires[i].t.id===t.id){nf=fires[i];break;}}
+    var c=CAT[t.cat];
+    var nextStr=nf?thDate(nf.f)+' '+t.time+' น.':'—';
+    var cd=nf?' <span class="mut">('+cdTxt(nf.f-n)+')</span>':'';
+    h+='<div class="card tap" data-cat="'+t.cat+'" onclick="tg(this)" style="border-left:4px solid '+c.c+'">'
+      +'<span class="chev">⌄</span>'
+      +'<div class="row" style="align-items:flex-start">'
+        +'<div style="font-size:22px;line-height:1;flex:none">'+t.icon+'</div>'
+        +'<div class="grow">'
+          +'<div class="tt" style="font-size:14px;padding-right:22px">'+esc(t.nm)+'</div>'
+          +'<div style="margin-top:7px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
+            +'<span class="pill" style="background:'+c.c+';border-color:'+c.c+';color:#fff">'+c.n+'</span>'
+            +'<span class="xs mut">⏰ '+t.time+' น.</span>'
+          +'</div>'
+        +'</div>'
+      +'</div>'
+      +'<div class="sm" style="margin-top:9px">รอบถัดไป: <b style="color:var(--accent)">'+nextStr+'</b>'+cd+'</div>'
+      +'<div class="xs mut" style="margin-top:4px">'+esc(t.win)+'</div>'
+      +'<div class="detail">'
+        +'<div><span class="mut">ส่งมอบ:</span> '+esc(t.deliver)+'</div>'
+        +'<div style="margin-top:9px"><span class="mut">อีเมล:</span> '+esc(t.mail)+' → <b>pichitjai@full-plan.com</b></div>'
+        +'<div style="margin-top:9px"><span class="mut">SKILL:</span> Scheduled/'+esc(t.skill)+'/SKILL.md</div>'
+        +'<div style="margin-top:9px"><span class="mut">สถานะล่าสุด:</span> '+esc(t.note)+'</div>'
+      +'</div>'
+    +'</div>';
+  });
+  var box=document.getElementById('taskcards');if(box)box.innerHTML=h;
+}
+
+/* ===== MONTH CALENDAR ===== */
+function renderCal(){
+  var n=now();var y=n.getFullYear(),m=n.getMonth();
+  var first=new Date(y,m,1),days=new Date(y,m+1,0).getDate();
+  var lead=(first.getDay()+6)%7;
+  setTxt('calmonth',TH_MF[m]+' '+(y+543));
+  var dow=['จ','อ','พ','พฤ','ศ','ส','อา'];
+  var g='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">';
+  for(var i=0;i<7;i++)g+='<div style="text-align:center;font-size:10px;font-weight:700;color:'+(i>=5?'var(--accent)':'var(--mut)')+';padding:2px 0">'+dow[i]+'</div>';
+  for(var l=0;l<lead;l++)g+='<div></div>';
+  for(var dd=1;dd<=days;dd++){
+    var d=new Date(y,m,dd);
+    var jobs=occON(d);
+    var isT=sameD(d,n);
+    var wk=d.getDay()==0||d.getDay()==6;
+    var ku=(d.getDay()==2&&kuWeek(d)>=3&&kuWeek(d)<=15)?kuWeek(d):0;
+    var dots='';jobs.slice(0,4).forEach(function(t){dots+='<span style="width:5px;height:5px;border-radius:50%;background:'+CAT[t.cat].c+'"></span>';});
+    var bg=isT?'background:color-mix(in srgb,var(--accent) 18%,transparent);':(wk?'background:var(--panel2);':'background:var(--bg);');
+    var bd=isT?'border:1px solid var(--accent);':'border:1px solid var(--line);';
+    g+='<div style="position:relative;min-height:44px;border-radius:9px;'+bd+bg+'padding:4px 3px 3px;display:flex;flex-direction:column;align-items:center;gap:3px">'
+      +'<span style="font-size:11.5px;font-weight:'+(isT?'800':'400')+';color:'+(isT?'var(--accent)':(wk?'var(--mut)':'var(--ink)'))+'">'+dd+'</span>'
+      +(ku?'<span style="position:absolute;top:2px;right:4px;font-size:8px;color:var(--mut)">W'+ku+'</span>':'')
+      +'<span style="display:flex;gap:2px;flex-wrap:wrap;justify-content:center;max-width:100%">'+dots+'</span>'
+    +'</div>';
+  }
+  g+='</div>';
+  var box=document.getElementById('cal');if(box)box.innerHTML=g;
+  var lg='';for(var k in CAT)lg+='<span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--mut)"><span style="width:9px;height:9px;border-radius:50%;background:'+CAT[k].c+'"></span>'+CAT[k].n+'</span>';
+  var lb=document.getElementById('callegend');if(lb)lb.innerHTML=lg;
+}
+
+/* ===== TIMELINE 45 DAYS ===== */
+function renderTL(){
+  var n=now();var start=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  setTxt('tlrange',thDate(start)+' → '+thDate(new Date(start.getFullYear(),start.getMonth(),start.getDate()+45)));
+  var html='',lastM=-1;
+  for(var i=0;i<=45;i++){
+    var d=new Date(start.getFullYear(),start.getMonth(),start.getDate()+i);
+    var jobs=occON(d);
+    if(!jobs.length)continue;
+    if(d.getMonth()!==lastM){lastM=d.getMonth();html+='<div class="xs" style="color:var(--accent);font-weight:800;letter-spacing:.4px;margin:12px 2px 7px">— '+TH_MF[d.getMonth()]+' '+(d.getFullYear()+543)+' —</div>';}
+    jobs.sort(function(a,b){return a.time.localeCompare(b.time);}).forEach(function(t){
+      var f=fireDT(t,d);var past=f<=n,isT=sameD(d,n);
+      var ku=t.id==='ku'?' → week_'+kuWeek(d):'';
+      var status=past?'<span class="pill" style="background:rgba(34,197,94,.15);border-color:transparent;color:#22c55e">✅ รันแล้ว</span>':(isT?'<span class="pill" style="background:rgba(245,158,11,.15);border-color:transparent;color:#f59e0b">🔥 วันนี้</span>':'<span class="pill acc">'+cdTxt(f-n)+'</span>');
+      html+='<div class="card" style="padding:11px 13px;margin-bottom:9px;'+(past?'opacity:.62;':'')+(isT?'border-color:var(--accent);':'')+'border-left:3px solid '+CAT[t.cat].c+'">'
+        +'<div class="row" style="align-items:flex-start;gap:9px">'
+          +'<div class="grow">'
+            +'<div class="sm" style="font-weight:700">'+esc(t.icon+' '+t.nm)+ku+'</div>'
+            +'<div class="xs mut" style="margin-top:3px">'+TH_D[d.getDay()]+' '+d.getDate()+' '+TH_M[d.getMonth()]+' · '+t.time+' น.</div>'
+          +'</div>'
+          +'<div style="flex:none">'+status+'</div>'
+        +'</div>'
+      +'</div>';
+    });
+  }
+  var box=document.getElementById('tl');if(box)box.innerHTML=html||'<div class="card mut sm">ไม่มีงานใน 45 วันข้างหน้า</div>';
+}
+
+/* ===== FULL-YEAR 2569 OVERVIEW ===== */
+function renderYear(){
+  var n=now();
+  var head='<div style="display:flex;align-items:center;padding:2px 2px 8px"><div style="flex:0 0 34%"></div><div style="flex:1;display:flex">';
+  for(var m=0;m<12;m++)head+='<div style="flex:1;text-align:center;font-size:8.5px;font-weight:700;color:'+(m===n.getMonth()?'var(--accent)':'var(--mut)')+'">'+TH_M[m].replace(/\./g,'')+'</div>';
+  head+='</div></div>';
+  var rows='';
+  TASKS.forEach(function(t){
+    var dots='';
+    for(var mm=0;mm<12;mm++){
+      var has=false,dim=new Date(2026,mm+1,0).getDate();
+      for(var dd=1;dd<=dim;dd++){if(t.occ(new Date(2026,mm,dd))){has=true;break;}}
+      var hl=mm===n.getMonth()?';background:color-mix(in srgb,var(--accent) 12%,transparent);border-radius:3px':'';
+      dots+='<div style="flex:1;display:flex;justify-content:center;align-items:center;height:15px'+hl+'">'+(has?'<span style="width:8px;height:8px;border-radius:50%;background:'+CAT[t.cat].c+'"></span>':'<span style="width:5px;height:1.5px;background:var(--line);border-radius:2px"></span>')+'</div>';
+    }
+    rows+='<div style="display:flex;align-items:center;padding:7px 2px;border-top:1px solid var(--line)">'
+      +'<div style="flex:0 0 34%;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:6px">'+esc(t.icon+' '+t.nm)+'</div>'
+      +'<div style="flex:1;display:flex">'+dots+'</div>'
+    +'</div>';
+  });
+  var box=document.getElementById('year');if(box)box.innerHTML='<div class="card" style="padding:12px 11px">'+head+rows+'</div>';
+}
+
+/* ===== EVE MAILBOX ===== */
+function renderMB(){
+  var n=now();
+  var done=MAILLOG.filter(function(x){return x.st==='done';}).length,
+      pend=MAILLOG.filter(function(x){return x.st==='pending';}).length,
+      err=MAILLOG.filter(function(x){return x.st==='error';}).length;
+  setTxt('mbDone',done);setTxt('mbPend',pend);setTxt('mbErr',err);
+  var ee=document.getElementById('mbErr');if(ee)ee.style.color=err?'#ef4444':'var(--mut)';
+  var nx=new Date(n);nx.setMinutes(6,0,0);if(n.getMinutes()>=6)nx.setHours(nx.getHours()+1);
+  if(nx.getHours()<7){nx.setHours(7,6,0,0);}if(nx.getHours()>23){nx.setDate(nx.getDate()+1);nx.setHours(7,6,0,0);}
+  setTxt('mbNext',String(nx.getHours()).padStart(2,'0')+':'+String(nx.getMinutes()).padStart(2,'0')+' น. ('+cdTxt(nx-n)+')');
+  var stChip=function(s){return s==='done'?'<span class="pill" style="background:rgba(34,197,94,.15);border-color:transparent;color:#22c55e">✅ สำเร็จ</span>':(s==='pending'?'<span class="pill" style="background:rgba(245,158,11,.15);border-color:transparent;color:#f59e0b">⏳ pending</span>':'<span class="pill" style="background:rgba(239,68,68,.15);border-color:transparent;color:#ef4444">❌ error</span>');};
+  var rows=MAILLOG.slice().reverse().map(function(x){return '<div class="card">'
+    +'<div class="row" style="justify-content:space-between;gap:8px"><span class="xs mut">🕐 '+esc(x.ts)+'</span>'+stChip(x.st)+'</div>'
+    +'<div class="sm" style="font-weight:700;margin-top:7px">'+esc(x.subj)+'</div>'
+    +'<div class="xs mut" style="margin-top:5px">คำสั่ง: '+esc(x.cmd)+'</div>'
+    +'<div class="xs mut" style="margin-top:2px">จาก: '+esc(x.from)+'</div>'
+    +'<div class="row" style="margin-top:8px;gap:6px"><span class="dot" style="background:'+x.tc+'"></span><span class="xs">'+esc(x.theme)+'</span></div>'
+    +(x.reply?'<div class="sm" style="margin-top:9px;color:var(--accent)">↩︎ '+esc(x.reply)+'</div>':'')
+  +'</div>';}).join('');
+  var box=document.getElementById('mbList');if(box)box.innerHTML=rows;
+}
+
+/* ===== BOOT + LIVE REFRESH (task cards render once to preserve expand state) ===== */
+function boot(){try{updAdvisor();renderWeek();renderChips();renderTasks();renderCal();renderTL();renderYear();renderMB();}catch(e){}}
+boot();
+setInterval(function(){try{updAdvisor();renderWeek();renderCal();renderTL();renderMB();}catch(e){}},60000);
+</script>
+<footer>ศูนย์บัญชาการเดียว · email + LINE + backup + update · Eve</footer>
+</div>
+<nav class="tabbar"><a href="#brief"><span class="ic">🔔</span><span>วันนี้</span></a><a href="#tasks"><span class="ic">📋</span><span>งาน</span></a><a href="#calendar"><span class="ic">🗓️</span><span>ปฏิทิน</span></a><a href="#mailbox"><span class="ic">📬</span><span>เมล</span></a><a href="#rules"><span class="ic">📖</span><span>กติกา</span></a></nav>
+<div id="toast">คัดลอกแล้ว</div>
+<script>
+(function(){
+try{if(window.navigator.standalone||matchMedia('(display-mode:standalone)').matches){var a=document.getElementById('a2hs');if(a)a.remove();}}catch(e){}
+var tabs=[].slice.call(document.querySelectorAll('.tabbar a'));
+var byId={};tabs.forEach(function(t){byId[t.getAttribute('href').slice(1)]=t;});
+var secs=[].slice.call(document.querySelectorAll('.sec'));
+if('IntersectionObserver' in window){
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){tabs.forEach(function(t){t.classList.remove('on');});var t=byId[e.target.id];if(t)t.classList.add('on');}});},{rootMargin:'-45% 0px -50% 0px',threshold:0});
+secs.forEach(function(s){io.observe(s);});}
+})();
+var _tt;
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('on');},1200);}
+function cp(x){try{navigator.clipboard&&navigator.clipboard.writeText(x);}catch(e){}toast('คัดลอก '+x);}
+function tg(el){el.classList.toggle('open');}
+</script>
+</body></html>

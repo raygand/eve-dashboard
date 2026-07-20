@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="th"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<title>Fitness — Eve System (Mobile)</title>
+<script type="application/json" id="cowork-artifact-meta">{"id":"raygand-fitness-dashboard-mobile","title":"Fitness · Eve System · Mobile","description":"แผนเทรน 7 วัน · ปฏิทินเดือน · เป้าหมาย BF ต่ำกว่า 10% · InBody & โภชนาการ · Dr.Raygand","updated":"2026-07-19"}</script>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="EVE Fit">
+<meta name="theme-color" content="#0E0E10">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><rect width='180' height='180' rx='40' fill='#E5484D'/><text x='50%25' y='55%25' font-size='92' font-family='Arial' font-weight='bold' fill='%23141414' text-anchor='middle' dominant-baseline='central'>F</text></svg>">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' rx='14' fill='#E5484D'/><text x='50%25' y='56%25' font-size='34' font-family='Arial' font-weight='bold' fill='%23141414' text-anchor='middle' dominant-baseline='central'>F</text></svg>">
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22EVE%20Fit%22%2C%22short_name%22%3A%22EVE%20Fit%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230E0E10%22%2C%22theme_color%22%3A%22%230E0E10%22%2C%22scope%22%3A%22.%22%2C%22start_url%22%3A%22.%22%7D">
+<style>
+:root{--accent:#E5484D;--accent2:#FF7A6B;--bg:#0E0E10;--panel:#17171B;--panel2:#1F1F26;--line:#2A2A32;--ink:#F3F1EC;--mut:#9A968C;--nav:60px;--sb:env(safe-area-inset-bottom);--st:env(safe-area-inset-top)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Thai",sans-serif;-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.5;padding-bottom:calc(var(--nav) + var(--sb) + 16px);overscroll-behavior-y:none}
+.appbar{position:sticky;top:0;z-index:20;background:rgba(14,14,16,.85);backdrop-filter:saturate(160%) blur(14px);-webkit-backdrop-filter:saturate(160%) blur(14px);border-bottom:1px solid var(--line);padding:calc(var(--st) + 10px) 14px 10px;display:flex;align-items:center;gap:11px}
+.appbar .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#141414;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex:none;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.appbar h1{font-size:16px;margin:0;font-weight:750;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appbar .sub{font-size:11px;color:var(--mut);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appbar .hd{flex:1;min-width:0}
+.topbtn{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:16px;cursor:pointer}
+.wrap{max-width:600px;margin:0 auto;padding:14px 14px 10px}
+.a2hs{margin:0 2px 16px;background:linear-gradient(135deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:11px 13px;font-size:12.5px;color:var(--mut);display:flex;gap:10px;align-items:center}
+.a2hs b{color:var(--ink);font-weight:700}.a2hs .ic{font-size:18px}.a2hs .x{margin-left:auto;color:var(--mut);font-size:20px;padding:2px 6px;cursor:pointer;line-height:1}
+.sec{scroll-margin-top:64px;margin-bottom:22px}
+.sec-h{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.5px;text-transform:uppercase;margin:4px 4px 11px}
+.sec-h .n{margin-left:auto;color:var(--mut);font-weight:700;font-size:11px;text-transform:none;letter-spacing:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 15px;margin-bottom:11px}
+.card.tap{cursor:pointer;transition:transform .12s,background .15s;position:relative}
+.card.tap:active{transform:scale(.985);background:var(--panel2)}
+.row{display:flex;align-items:center;gap:11px}
+.row .grow{flex:1;min-width:0}
+.tt{font-size:15px;font-weight:700;letter-spacing:.2px}
+.mut{color:var(--mut)}.sm{font-size:12.5px}.xs{font-size:11px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:750;padding:3px 10px;border-radius:20px;background:var(--panel2);border:1px solid var(--line);color:var(--mut);white-space:nowrap}
+.pill.acc{background:color-mix(in srgb,var(--accent) 20%,transparent);border-color:color-mix(in srgb,var(--accent) 45%,transparent);color:var(--ink)}
+.dot{width:9px;height:9px;border-radius:50%;flex:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}
+.stat .v{font-size:22px;font-weight:800;letter-spacing:.3px}.stat .k{font-size:11.5px;color:var(--mut);margin-top:2px}
+.detail{display:none;margin-top:11px;padding-top:12px;border-top:1px dashed var(--line);font-size:13px;color:var(--mut);line-height:1.6}
+.card.open .detail{display:block}
+.card.tap .chev{position:absolute;right:14px;top:14px;color:var(--mut);transition:transform .2s}.card.open .chev{transform:rotate(180deg)}
+.swatch{height:74px;border-radius:12px;display:flex;align-items:flex-end;padding:8px 10px;cursor:pointer;position:relative}
+.swatch .cc{font-size:10px;font-weight:700;background:rgba(0,0,0,.25);border-radius:5px;padding:2px 7px}
+.hex{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.3px}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;height:calc(var(--nav) + var(--sb));padding-bottom:var(--sb);background:rgba(18,18,22,.93);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex}
+.tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:9.5px;color:var(--mut);text-decoration:none;font-weight:650;letter-spacing:.2px;min-width:0;padding:0 2px}
+.tabbar a .ic{font-size:19px;line-height:1}
+.tabbar a.on{color:var(--accent)}
+.tabbar a span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.btn{display:flex;align-items:center;justify-content:center;gap:7px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#141414;border:0;border-radius:13px;padding:13px 16px;font-size:14px;font-weight:800;cursor:pointer;width:100%;margin-top:2px}
+.sep{height:1px;background:var(--line);margin:12px 0;border:0}
+footer{color:var(--mut);font-size:11.5px;line-height:1.6;text-align:center;padding:14px 6px 4px;border-top:1px solid var(--line);margin-top:8px}
+#toast{position:fixed;left:50%;bottom:calc(var(--nav) + var(--sb) + 18px);transform:translateX(-50%) translateY(16px);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#141414;font-weight:800;font-size:13px;padding:11px 20px;border-radius:24px;opacity:0;transition:.25s;pointer-events:none;z-index:40;box-shadow:0 6px 20px rgba(0,0,0,.4)}#toast.on{opacity:1;transform:translateX(-50%)}
+</style>
+<style>
+/* board-specific: training badges + month calendar + goal widgets (scoped, no clash with shell) */
+.badge{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:11px;padding:5px 10px;border-radius:999px;border:1px solid transparent;white-space:nowrap;line-height:1.25;flex:none}
+.b-run{background:rgba(59,130,246,.14);color:#93c0ff;border-color:rgba(59,130,246,.4)}
+.b-upper{background:rgba(255,255,255,.07);color:#e6e6ea;border-color:rgba(255,255,255,.14)}
+.b-leg{background:rgba(225,29,42,.14);color:#ff8088;border-color:rgba(225,29,42,.45)}
+.b-refeed{background:rgba(245,158,11,.14);color:#ffd07a;border-color:rgba(245,158,11,.4)}
+.day-today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.warn-note{margin-top:10px;background:rgba(245,158,11,.13);border:1px solid rgba(245,158,11,.35);color:#ffe0a6;border-radius:10px;padding:8px 11px;font-size:12px;line-height:1.5}
+.nutri-line{margin-top:8px;font-size:12px;color:var(--mut)}
+.nutri-line b{color:var(--ink);font-weight:700}
+.gh{font-size:12px;color:var(--mut);margin:2px 4px 10px;line-height:1.5}
+.card-h{font-size:13px;font-weight:800;letter-spacing:.2px;margin-bottom:6px;color:var(--accent)}
+.cal-title{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}
+.cal-title .m{font-size:19px;font-weight:800}
+.cal-title .yr{font-size:12px;color:var(--mut)}
+.cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:5px}
+.cal-head span{text-align:center;font-size:10px;font-weight:700;color:var(--mut)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-cell{min-height:47px;border-radius:8px;border:1px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:3px 1px}
+.cal-cell .cd{font-size:12.5px;font-weight:800;line-height:1;color:#f3f1ec}
+.cal-cell .ct{font-size:9px;font-weight:800;letter-spacing:.3px;line-height:1}
+.cal-empty{min-height:47px}
+.cal-today{outline:2px solid var(--accent);outline-offset:-2px}
+.cal-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px}
+.mission-big{display:flex;align-items:baseline;gap:9px}
+.mission-big .now{font-size:32px;font-weight:800}
+.mission-big .arr{color:var(--mut);font-size:18px}
+.mission-big .goal{font-size:19px;font-weight:800;color:var(--accent)}
+.track{height:9px;border-radius:999px;background:var(--panel2);overflow:hidden;border:1px solid var(--line);margin-top:12px}
+.track .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.tl-track{height:6px;border-radius:999px;background:var(--panel2);position:relative;border:1px solid var(--line);margin-top:6px}
+.tl-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#3b82f6,#22c55e)}
+.tl-dot{position:absolute;top:50%;width:13px;height:13px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 0 4px rgba(255,255,255,.12)}
+.du{font-size:12px;font-weight:600;color:var(--mut)}
+.macro4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:13px}
+.macro4>div{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:9px 4px;text-align:center}
+.macro4 .mv{font-weight:800;font-size:17px;line-height:1.1}
+.macro4 .ml{font-size:9.5px;color:var(--mut);margin-top:3px}
+.meal-item{padding:9px 0;border-top:1px solid var(--line)}
+.meal-item:first-child{border-top:0;padding-top:2px}
+.meal-item .mt{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.3px}
+.meal-item .mc{font-size:12.5px;color:var(--ink);margin-top:2px;line-height:1.45}
+.rule-item{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:12.5px;line-height:1.5}
+.rule-item:first-child{border-top:0}
+.rule-item b{color:var(--ink);font-weight:800}
+.rule-item .rn{flex:none;width:22px;height:22px;border-radius:7px;background:rgba(229,72,77,.16);color:var(--accent);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.rule-item.watch .rn{background:rgba(245,158,11,.16);color:#ffd07a}
+.logt{width:100%;border-collapse:collapse;font-size:12.5px}
+.logt th{padding:7px 5px;font-size:10.5px;color:var(--mut);font-weight:700;border-bottom:1px solid var(--line);text-align:center}
+.logt td{padding:8px 5px;border-bottom:1px solid var(--line);text-align:center}
+.logt tr:last-child td{border-bottom:0}
+.logt td:first-child,.logt th:first-child{text-align:left}
+.logt .pend td{color:var(--mut)}
+</style></head>
+<body>
+<div class="appbar"><div class="logo">F</div><div class="hd"><h1>Fitness · Eve System</h1><div class="sub">แผนเทรน 7 วัน · Dr.Raygand</div></div><button class="topbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button></div>
+<div class="wrap">
+<div class="a2hs" id="a2hs"><span class="ic">📲</span><div>เปิดได้ตลอดเหมือนแอป — <b>แชร์ → เพิ่มลงในหน้าจอโฮม</b></div><span class="x" onclick="this.parentNode.remove()">×</span></div>
+
+<!-- ===== WEEK ===== -->
+<section class="sec" id="week">
+  <div class="sec-h"><span>🗓️ แผนเทรน 7 วัน</span><span class="n">v1.3</span></div>
+  <div class="gh">ไฮไลต์แดง = วันนี้ · แต่ละวันมีการเทรน · คาร์ดิโอ · โภชนาการ</div>
+  <div id="weekCards"></div>
+</section>
+
+<!-- ===== MONTH ===== -->
+<section class="sec" id="month">
+  <div class="sec-h"><span>📆 ปฏิทินเดือน</span><span class="n" id="calCount">—</span></div>
+  <div class="card">
+    <div class="cal-title"><span class="m" id="calMonth">—</span><span class="yr" id="calYear"></span></div>
+    <div class="cal-head"><span>อา</span><span>จ</span><span>อ</span><span>พ</span><span>พฤ</span><span>ศ</span><span>ส</span></div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-legend">
+      <span class="badge b-run">🏃 RUN 10K</span>
+      <span class="badge b-upper">🏋️ UPPER</span>
+      <span class="badge b-leg">🔒 LEG DAY</span>
+      <span class="badge b-refeed">🍚 REFEED</span>
+    </div>
+  </div>
+  <div class="gh">สีในช่อง = ประเภทการเทรนของวันนั้น (วนซ้ำทุกสัปดาห์) · กรอบแดง = วันนี้</div>
+</section>
+
+<!-- ===== GOAL / DATA ===== -->
+<section class="sec" id="goal">
+  <div class="sec-h"><span>🎯 เป้าหมาย &amp; ข้อมูล</span><span class="n">Road to sub-10%</span></div>
+
+  <!-- Mission -->
+  <div class="card">
+    <div class="card-h">ภารกิจ · Road to sub-10%</div>
+    <div class="mission-big"><span class="now">16.8%</span><span class="arr">→</span><span class="goal">&lt; 10%</span></div>
+    <div class="sm mut" style="margin-top:7px">ต้องลดไขมันอีก <b style="color:var(--ink)">~5.4 kg</b> (6.8 จุด) → จบที่ <b style="color:var(--ink)">~66.5–67 kg</b></div>
+    <div class="track"><div class="fill" style="width:2%"></div></div>
+    <div class="xs mut" style="margin-top:6px">ความคืบหน้าลดไขมัน · <b style="color:var(--ink)">Day 1</b> — เริ่มนับจาก baseline วันนี้</div>
+    <hr class="sep">
+    <div style="display:flex;justify-content:space-between"><span class="xs mut">14 Jul</span><span class="xs mut">เป้า ~15 Oct</span></div>
+    <div class="tl-track"><div class="tl-fill" id="tlFill" style="width:0%"></div><div class="tl-dot" id="tlDot" style="left:0%"></div></div>
+    <div class="xs mut" style="text-align:center;margin-top:9px">เหลือ <b style="color:var(--ink)" id="daysLeft">~93 วัน</b> · <span id="weeksLeft">~13 สัปดาห์</span> ถึงกลางตุลาคม</div>
+  </div>
+
+  <!-- InBody -->
+  <div class="gh" style="margin-top:16px">InBody ล่าสุด · 14 Jul (scan เย็น)</div>
+  <div class="grid2">
+    <div class="stat"><div class="v">71.9<span class="du"> kg</span></div><div class="k">น้ำหนัก</div><div class="xs" style="color:#ff8088;margin-top:5px">▲ +2.5 · ไขมัน +2.6 / กล้าม +0.1</div></div>
+    <div class="stat"><div class="v">16.8<span class="du"> %</span></div><div class="k">Body Fat</div><div class="xs mut" style="margin-top:5px">fat mass 12.1 kg</div></div>
+    <div class="stat"><div class="v">34.3<span class="du"> kg</span></div><div class="k">Skeletal Muscle</div><div class="xs" style="color:#22c55e;margin-top:5px">● ทรงตัว</div></div>
+    <div class="stat"><div class="v">1,662<span class="du"> kcal</span></div><div class="k">BMR</div><div class="xs mut" style="margin-top:5px">Visceral Lv.4 · WHR 0.81</div></div>
+  </div>
+  <div class="gh" style="margin-top:10px">📅 InBody รอบถัดไป <b style="color:var(--ink)">~28 Jul</b> — ชั่ง <b style="color:var(--ink)">เช้า ท้องว่าง หลังเข้าห้องน้ำ</b> ทุกครั้ง (ทุก 2 สัปดาห์)</div>
+
+  <!-- Nutrition -->
+  <div class="gh" style="margin-top:16px">โภชนาการ</div>
+  <div class="card tap" onclick="tg(this)">
+    <span class="chev">⌄</span>
+    <div class="tt">🍽️ Baseline (จ–ศ + อา)</div>
+    <div class="sm mut" style="margin-top:4px">5 มื้อ · ~1,880 kcal · P192 / F55 / C128</div>
+    <div class="detail">
+      <div class="meal-item"><div class="mt">PRE-WORKOUT · เช้า</div><div class="mc">Whey 1 scoop (27g P) + BCAA + Spinach + Berry 30g + Lemon juice</div></div>
+      <div class="meal-item"><div class="mt">POST-WORKOUT</div><div class="mc">Whey 1 scoop (27g P) + Creatine 5g + Collagen 5g + Magnesium + Almond 30g</div></div>
+      <div class="meal-item"><div class="mt">กลางวัน</div><div class="mc">ข้าวสุก 200g + อกไก่ไม่ติดมัน 150g + ไข่เต็มฟอง 2</div></div>
+      <div class="meal-item"><div class="mt">เย็น</div><div class="mc">ข้าวสุก 200g + แซลมอนย่างลอกหนัง 150g + ไข่เต็มฟอง 2</div></div>
+      <div class="meal-item"><div class="mt">PRE-BED · 19:00</div><div class="mc">Whey 1 scoop (27g P) + Greek yogurt + Magnesium</div></div>
+      <div class="macro4">
+        <div><div class="mv" style="color:#22c55e">192</div><div class="ml">Protein g ✅</div></div>
+        <div><div class="mv">55</div><div class="ml">Fat g</div></div>
+        <div><div class="mv">128</div><div class="ml">Carbs g</div></div>
+        <div><div class="mv">1,880</div><div class="ml">kcal</div></div>
+      </div>
+      <div style="margin-top:10px">Deficit ~520–720 kcal/วัน · คาร์บต่ำโดยตั้งใจ (Phase 1)</div>
+    </div>
+  </div>
+  <div class="card tap" onclick="tg(this)">
+    <span class="chev">⌄</span>
+    <div class="tt">🍚 เสาร์ · Structured Refeed</div>
+    <div class="sm mut" style="margin-top:4px">คาร์บ 250–300g · ~2,400–2,600 kcal · free meal 1 มื้อ</div>
+    <div class="detail">
+      คาร์บ <b style="color:var(--ink)">250–300g</b> · โปรตีนคงเดิม · Fat ≤60g · ~2,400–2,600 kcal · free meal ของอร่อย <b style="color:var(--ink)">1 มื้อเต็ม</b><br><br>
+      หลักการ: <b style="color:#ffd07a">"กินเพิ่มที่จาน ไม่ใช่กินอิสระที่ใจ"</b> → คาร์บเฉลี่ยทั้งสัปดาห์ ~150g/วัน · เติม glycogen ไว้วิ่งวันอาทิตย์
+    </div>
+  </div>
+
+  <!-- Iron Rules -->
+  <div class="gh" style="margin-top:16px">กฎเหล็ก · Iron Rules</div>
+  <div class="card">
+    <div class="rule-item"><span class="rn">1</span><div><b>Leg day ห้ามตัดทุกกรณี</b> — priority สูงสุด (รักษากล้ามขา)</div></div>
+    <div class="rule-item"><span class="rn">2</span><div>เวย์ 3 มื้อคือโครงหลัก — พลาด 1 scoop โปรตีนหลุดต่ำกว่า 180g</div></div>
+    <div class="rule-item"><span class="rn">3</span><div>โปรตีนเฉลี่ย <b>ห้ามต่ำกว่า 180g</b> ช่วง cut</div></div>
+    <div class="rule-item"><span class="rn">4</span><div>Fat <b>ห้ามต่ำกว่า 40g</b> ต่อเนื่อง (ฮอร์โมน)</div></div>
+    <div class="rule-item"><span class="rn">5</span><div>น้ำหนักเด้ง 2–3 วันหลังเพิ่มคาร์บ = น้ำ+glycogen ดู trend หลังวันที่ 4</div></div>
+    <div class="rule-item"><span class="rn">6</span><div>Baseline นี้ = ถาวร (Phase 1) · BF แตะ 10–11% → ทบทวนยกคาร์บ ~130–150g</div></div>
+  </div>
+
+  <!-- Watch -->
+  <div class="gh" style="margin-top:16px">Eve เฝ้าจับตา · First Principles</div>
+  <div class="card">
+    <div class="rule-item watch"><span class="rn">!</span><div><b>อ่านค่ารอบ 28 Jul อย่าเพิ่งดีใจ</b> — baseline นี้ scan เย็น แต่รอบหน้าชั่งเช้าท้องว่าง ตัวเลขอาจดูลดเยอะผิดจริงจากเงื่อนไขการชั่งที่ต่างกัน</div></div>
+    <div class="rule-item watch"><span class="rn">!</span><div><b>พฤหัส Run → ศุกร์ Leg</b> คือจุดเปราะ glycogen ขาพร่องก่อนวันขาสำคัญ ถ้าแรง Squat/RDL ศุกร์ถอย 2 รอบ → เปิด mini-refeed พุธ</div></div>
+  </div>
+
+  <!-- Tracking Log -->
+  <div class="gh" style="margin-top:16px">Tracking Log</div>
+  <div class="card">
+    <table class="logt">
+      <thead><tr><th>วันที่</th><th>นน.</th><th>BF%</th><th>กล้าม</th><th>HRV</th></tr></thead>
+      <tbody>
+        <tr><td>14 Jul</td><td>71.9</td><td>16.8</td><td>34.3</td><td>—</td></tr>
+        <tr class="pend"><td>~28 Jul</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="gh">แถวจะเติมเองทุกครั้งที่ส่งค่าใหม่ · กราฟ trend จะขึ้นเมื่อมี ≥2 จุดข้อมูล</div>
+
+  <!-- How to update -->
+  <div class="card" style="background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.3);margin-top:6px">
+    <div class="sm" style="color:#c8f2d4;line-height:1.6"><b style="color:#fff">อัปเดตทุกเช้า:</b> ส่งไฟล์ <b style="color:#fff">Health-YYYY-MM-DD.txt</b> หรือค่า InBody เข้าแชท แล้วพิมพ์ <b style="color:#fff">"อัปเดต dashboard"</b> — Eve จะเติมกราฟ/ตาราง/trend, bump version, ต่อ changelog แล้วเซฟทับไฟล์นี้ในโฟลเดอร์ Drive เดิม</div>
+  </div>
+
+  <div class="gh" style="text-align:center;margin-top:14px">
+    <b style="color:var(--ink)">EVE-FITNESS-SYSTEM v1.3</b> · source of truth · อัปเดต 14 Jul 2026<br>
+    Leg day ห้ามตัด · Protein ≥180g · Fat ≥40g<br>
+    <span id="genstamp"></span>
+  </div>
+</section>
+
+<script>
+(function(){
+  try{
+    var days=[
+      {name:"อาทิตย์",badge:["🏃 RUN 10K","b-run"],train:"Easy Run 10 km · Zone 2",cardio:"glycogen เต็มจาก refeed เมื่อวาน",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
+      {name:"จันทร์",badge:["🏋️ UPPER","b-upper"],train:"Upper — Shoulder 4 · Back 4 · Chest 4 · Bi 2 · Tri 2",cardio:"Incline Walk 15 / 4 / 30 นาที",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
+      {name:"อังคาร",badge:["🔒 LEG DAY","b-leg"],train:"Leg 5–7 ท่า — Squat / RDL / Leg Press",cardio:"ไม่มี cardio วันนี้",nutri:"Baseline",detail:"· กินให้ครบ เวทขาต้องมีแรง",warn:"leg"},
+      {name:"พุธ",badge:["🏋️ UPPER","b-upper"],train:"Upper (เหมือนจันทร์)",cardio:"Incline Walk 15 / 4 / 30 นาที",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
+      {name:"พฤหัสบดี",badge:["🏃 RUN 10K","b-run"],train:"Easy Run 10 km · Zone 2 (60–75 นาที)",cardio:"คุม pace ครึ่งหลังให้นิ่ง",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
+      {name:"ศุกร์",badge:["🔒 LEG DAY","b-leg"],train:"Leg — จุดเฝ้าระวังหลักของสัปดาห์",cardio:"ไม่มี cardio วันนี้",nutri:"Baseline",detail:"· วันขาที่สำคัญที่สุด",warn:"legfri"},
+      {name:"เสาร์",badge:["🍚 REFEED","b-refeed"],train:"Rest + Structured Refeed",cardio:"พักเต็มที่ / เดินเบา",nutri:"Refeed",detail:"· คาร์บ 250–300g · free meal 1 มื้อ",warn:""}
+    ];
+    var months=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+    var now=new Date();
+    var dow=now.getDay();
+
+    /* ---- WEEK CARDS (7 days, Sun-first, verbatim data) ---- */
+    var wc="";
+    for(var i=0;i<days.length;i++){
+      var x=days[i], today=(i===dow);
+      var warnHtml="";
+      if(x.warn==="leg"){warnHtml='<div class="warn-note">🔒 กฎเหล็ก #1 — Leg day ห้ามตัด ไม่ว่าเมื่อวานจะกิน/นอนหลุดแค่ไหน</div>';}
+      else if(x.warn==="legfri"){warnHtml='<div class="warn-note">🔒 Leg วันศุกร์ = จุดชี้วัดของสัปดาห์ · จดน้ำหนัก Squat/RDL + แรงกลางเซสชันไว้รายงาน Eve</div>';}
+      var todayPill=today?' <span class="pill acc">วันนี้</span>':'';
+      wc+='<div class="card'+(today?' day-today':'')+'">'
+        +'<div class="row"><div class="grow"><div class="tt">วัน'+x.name+todayPill+'</div></div>'
+        +'<span class="badge '+x.badge[1]+'">'+x.badge[0]+'</span></div>'
+        +'<div class="sm" style="margin-top:10px;font-weight:600">'+x.train+'</div>'
+        +'<div class="xs mut" style="margin-top:5px">'+x.cardio+'</div>'
+        +'<div class="nutri-line">🍽️ <b>'+x.nutri+'</b> '+x.detail+'</div>'
+        +warnHtml
+        +'</div>';
+    }
+    var wcEl=document.getElementById("weekCards"); if(wcEl){wcEl.innerHTML=wc;}
+
+    /* ---- MONTH CALENDAR (reuse months + map weekday -> training badge) ---- */
+    var y=now.getFullYear(), m=now.getMonth();
+    var mn=document.getElementById("calMonth"); if(mn){mn.textContent=months[m];}
+    var yr=document.getElementById("calYear"); if(yr){yr.textContent=(y+543)+" · "+y;}
+    var cc=document.getElementById("calCount"); if(cc){cc.textContent=months[m]+" "+(y+543);}
+    var codeMap={"b-run":"RUN","b-upper":"UP","b-leg":"LEG","b-refeed":"RF"};
+    var first=new Date(y,m,1).getDay();
+    var dim=new Date(y,m+1,0).getDate();
+    var cg="";
+    for(var b=0;b<first;b++){cg+='<div class="cal-empty"></div>';}
+    for(var d=1;d<=dim;d++){
+      var wd=new Date(y,m,d).getDay();
+      var dd=days[wd], cls=dd.badge[1];
+      var code=codeMap[cls]||"";
+      var tdy=(d===now.getDate())?" cal-today":"";
+      cg+='<div class="cal-cell '+cls+tdy+'"><span class="cd">'+d+'</span><span class="ct">'+code+'</span></div>';
+    }
+    var cgEl=document.getElementById("calGrid"); if(cgEl){cgEl.innerHTML=cg;}
+
+    /* ---- MISSION TIMELINE (same math as source) ---- */
+    var start=new Date(2026,6,14), goal=new Date(2026,9,15);
+    var pct=Math.max(0,Math.min(100,Math.round((now-start)/(goal-start)*100)));
+    var left=Math.max(0,Math.ceil((goal-now)/86400000));
+    var tf=document.getElementById("tlFill"); if(tf){tf.style.width=pct+"%";}
+    var tdo=document.getElementById("tlDot"); if(tdo){tdo.style.left=pct+"%";}
+    var dl=document.getElementById("daysLeft"); if(dl){dl.textContent="~"+left+" วัน";}
+    var wl=document.getElementById("weeksLeft"); if(wl){wl.textContent="~"+Math.round(left/7)+" สัปดาห์";}
+
+    /* ---- gen stamp ---- */
+    var gs=document.getElementById("genstamp"); if(gs){gs.textContent="เปิดดูล่าสุด "+now.getDate()+" "+months[m]+" "+(y+543);}
+  }catch(e){}
+})();
+</script>
+
+<footer>Eve System · Fitness · จัดทำโดย Eve</footer>
+</div>
+<nav class="tabbar"><a href="#week"><span class="ic">🗓️</span><span>สัปดาห์</span></a><a href="#month"><span class="ic">📆</span><span>เดือน</span></a><a href="#goal"><span class="ic">🎯</span><span>เป้า</span></a></nav>
+<div id="toast">คัดลอกแล้ว</div>
+<script>
+(function(){
+try{if(window.navigator.standalone||matchMedia('(display-mode:standalone)').matches){var a=document.getElementById('a2hs');if(a)a.remove();}}catch(e){}
+var tabs=[].slice.call(document.querySelectorAll('.tabbar a'));
+var byId={};tabs.forEach(function(t){byId[t.getAttribute('href').slice(1)]=t;});
+var secs=[].slice.call(document.querySelectorAll('.sec'));
+if('IntersectionObserver' in window){
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){tabs.forEach(function(t){t.classList.remove('on');});var t=byId[e.target.id];if(t)t.classList.add('on');}});},{rootMargin:'-45% 0px -50% 0px',threshold:0});
+secs.forEach(function(s){io.observe(s);});}
+})();
+var _tt;
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('on');},1200);}
+function cp(x){try{navigator.clipboard&&navigator.clipboard.writeText(x);}catch(e){}toast('คัดลอก '+x);}
+function tg(el){el.classList.toggle('open');}
+</script>
+</body></html>
