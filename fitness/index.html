@@ -148,7 +148,7 @@
       <div class="dot">E</div>
       <div><b>Dr.Raygand</b><span>Eve · Fitness System</span></div>
     </div>
-    <div class="ver"><b>v1.3</b><br>อัปเดต 14 Jul 2026</div>
+    <div class="ver"><b>v1.4</b><br>อัปเดต 20 Jul 2026</div>
   </div>
 </header>
 
@@ -206,7 +206,7 @@
 
   <!-- WEEK -->
   <section>
-    <div class="label">ตารางซ้อม · สัปดาห์ (v1.3)</div>
+    <div class="label">ตารางซ้อม · สัปดาห์ (v1.4)</div>
     <div class="card" style="padding:6px 10px">
       <table class="wk"><tbody id="weekBody"></tbody></table>
     </div>
@@ -264,7 +264,7 @@
     <div class="card">
       <ul class="rules watch">
         <li><span class="n">!</span><div><b style="font-family:Prompt">อ่านค่ารอบ 28 Jul อย่าเพิ่งดีใจ</b> — baseline นี้ scan เย็น แต่รอบหน้าชั่งเช้าท้องว่าง ตัวเลขอาจดูลดเยอะผิดจริงจากเงื่อนไขการชั่งที่ต่างกัน</div></li>
-        <li><span class="n">!</span><div><b style="font-family:Prompt">พฤหัส Run → ศุกร์ Leg</b> คือจุดเปราะ glycogen ขาพร่องก่อนวันขาสำคัญ ถ้าแรง Squat/RDL ศุกร์ถอย 2 รอบ → เปิด mini-refeed พุธ</div></li>
+        <li><span class="n">!</span><div><b style="font-family:Prompt">อาทิตย์ Run → จันทร์ Leg</b> คือจุดที่ต้องดู (refeed เสาร์ช่วยเติม glycogen ให้ทั้งวิ่งอาทิตย์และขาจันทร์) · <b style="font-family:Prompt">ศุกร์ Leg</b> ตอนนี้ตามหลังวันอก/แขน ไม่ใช่วิ่ง จึงปลอดภัยขึ้นกว่าเดิม — ถ้าแรง Squat/RDL ถอย 2 รอบติด หรือแรงขาวันศุกร์ตก → ตัด incline วันขาออกก่อน แล้วค่อยเปิด mini-refeed พุธ</div></li>
       </ul>
     </div>
   </section>
@@ -292,7 +292,7 @@
   </section>
 
   <div class="foot">
-    <b>EVE-FITNESS-SYSTEM v1.3</b> · source of truth<br>
+    <b>EVE-FITNESS-SYSTEM v1.4</b> · source of truth<br>
     Leg day ห้ามตัด · Protein ≥180g · Fat ≥40g<br>
     <span id="genstamp"></span>
   </div>
@@ -303,11 +303,11 @@
 (function(){
   var days=[
     {name:"อาทิตย์",badge:["🏃 RUN 10K","b-run"],train:"Easy Run 10 km · Zone 2",cardio:"glycogen เต็มจาก refeed เมื่อวาน",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
-    {name:"จันทร์",badge:["🏋️ UPPER","b-upper"],train:"Upper — Shoulder 4 · Back 4 · Chest 4 · Bi 2 · Tri 2",cardio:"Incline Walk 15 / 4 / 30 นาที",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
-    {name:"อังคาร",badge:["🔒 LEG DAY","b-leg"],train:"Leg 5–7 ท่า — Squat / RDL / Leg Press",cardio:"ไม่มี cardio วันนี้",nutri:"Baseline",detail:"· กินให้ครบ เวทขาต้องมีแรง",warn:"leg"},
-    {name:"พุธ",badge:["🏋️ UPPER","b-upper"],train:"Upper (เหมือนจันทร์)",cardio:"Incline Walk 15 / 4 / 30 นาที",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
-    {name:"พฤหัสบดี",badge:["🏃 RUN 10K","b-run"],train:"Easy Run 10 km · Zone 2 (60–75 นาที)",cardio:"คุม pace ครึ่งหลังให้นิ่ง",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
-    {name:"ศุกร์",badge:["🔒 LEG DAY","b-leg"],train:"Leg — จุดเฝ้าระวังหลักของสัปดาห์",cardio:"ไม่มี cardio วันนี้",nutri:"Baseline",detail:"· วันขาที่สำคัญที่สุด",warn:"legfri"},
+    {name:"จันทร์",badge:["🔒 LEG DAY","b-leg"],train:"Leg 5–7 ท่า — Squat / RDL / Leg Press",cardio:"Incline Walk 15 / 4 / 30 นาที (ต่อท้ายเวทขา)",nutri:"Baseline",detail:"· กินให้ครบ เวทขาต้องมีแรง",warn:"leg"},
+    {name:"อังคาร",badge:["🏃 RUN 10K","b-run"],train:"Easy Run 10 km · Zone 2 (60–75 นาที)",cardio:"คุม pace ครึ่งหลังให้นิ่ง",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
+    {name:"พุธ",badge:["🏋️ SHOULDER+BACK","b-upper"],train:"ไหล่ + หลัง — Shoulder / Back",cardio:"Incline Walk 15 / 4 / 30 นาที",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
+    {name:"พฤหัสบดี",badge:["🏋️ CHEST+ARMS","b-upper"],train:"อก + หน้าแขน + หลังแขน — Chest / Bi / Tri",cardio:"Incline Walk 15 / 4 / 30 นาที",nutri:"Baseline",detail:"· โภชนาการปกติ",warn:""},
+    {name:"ศุกร์",badge:["🔒 LEG DAY","b-leg"],train:"Leg — จุดเฝ้าระวังหลักของสัปดาห์",cardio:"Incline Walk 15 / 4 / 30 นาที (ต่อท้ายเวทขา)",nutri:"Baseline",detail:"· วันขาที่สำคัญที่สุด",warn:"legfri"},
     {name:"เสาร์",badge:["🍚 REFEED","b-refeed"],train:"Rest + Structured Refeed",cardio:"พักเต็มที่ / เดินเบา",nutri:"Refeed",detail:"· คาร์บ 250–300g · free meal 1 มื้อ",warn:""}
   ];
   var months=["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
