@@ -75,27 +75,24 @@ footer{color:var(--mut);font-size:11.5px;line-height:1.6;text-align:center;paddi
 
   <div class="mut sm" style="margin:2px 4px 12px;line-height:1.65">รวมการเตือนทุกอย่างไว้จุดเดียว → Eve ส่งบรีฟทาง <b style="color:var(--accent)">LINE ทุกเช้า ~07:05 น.</b> (เช็คลิสต์ของวันนั้น + นับถอยหลังวันสำคัญ) · แก้/เพิ่มที่ไฟล์เดียว <code style="background:var(--panel2);padding:1px 6px;border-radius:5px">EVE-REMINDERS.json</code> · ยุบจาก LINE reminder 4 + task ค้าง 11 ให้เหลือจุดเดียว (19 ก.ค. 2026)</div>
 
-  <div class="card" style="border-left:3px solid var(--accent)">
-    <div class="tt" style="font-size:14px">🎓 PhD Checklist</div>
-    <div class="xs mut" style="margin-top:2px">ทุกอังคาร · 10:30</div>
-    <div class="sm" style="margin-top:7px">Research Design (08:00–09:00) · ส่งงาน Research Design · Present Topic <span style="color:var(--accent)">· นับถอยหลังถึง 6 ต.ค.</span></div>
-  </div>
-  <div class="card" style="border-left:3px solid #2dd4bf">
-    <div class="tt" style="font-size:14px">🥤 Bobbi Checklist</div>
-    <div class="xs mut" style="margin-top:2px">ทุกอังคาร · 14:00</div>
-    <div class="sm" style="margin-top:7px">สรุป NPD 4 SKU (ส่วนผสม + วันวางขาย) · แผนเข้า 7-11</div>
-  </div>
-  <div class="card" style="border-left:3px solid var(--accent)">
-    <div class="tt" style="font-size:14px">🌵 David Days Checklist</div>
-    <div class="xs mut" style="margin-top:2px">ทุกศุกร์ · 10:30</div>
-    <div class="sm" style="margin-top:7px">CJ Express · Watsons · Tops · 7-Eleven <span class="mut">(รายละเอียดส่งทาง LINE)</span></div>
-  </div>
-  <div class="card" style="border-left:3px solid #60a5fa">
-    <div class="tt" style="font-size:14px">🎓 เลือกอาจารย์ที่ปรึกษา PhD</div>
-    <div class="xs mut" style="margin-top:2px">เสาร์ 24 ต.ค. 2026 · 15:00</div>
-    <div class="sm" style="margin-top:7px">เตรียมเลือก อ.เอ (ดร.สุทธินันท์) · <b style="color:#60a5fa" id="advisorDays">—</b></div>
-  </div>
-  <div class="mut xs" style="margin:6px 4px 0;line-height:1.65">หน้านี้เป็นเว็บสาธารณะ — แสดงเฉพาะหัวข้อ+เวลา · ตัวเลข/ข้อมูลภายใน (เช่น การเงิน) ส่งทาง LINE ส่วนตัวเท่านั้น</div>
+  <div id="mBriefCards"></div>
+  <div class="mut xs" style="margin:6px 4px 0;line-height:1.65">หน้านี้เป็นเว็บสาธารณะ — แสดงเฉพาะหัวข้อ+เวลา · ตัวเลข/ข้อมูลภายใน (เช่น การเงิน) ส่งทาง LINE ส่วนตัวเท่านั้น · <span style="opacity:.7">การ์ดสร้างอัตโนมัติจาก EVE-REMINDERS.json — ไม่ค้าง</span></div>
+  <script id="m-brief-data" type="application/json">{"updated": "2026-07-24", "cards": [{"emoji": "🎓", "title": "PhD Checklist", "when": "ทุกอังคาร · 10:30", "summary": "Research Design (วิชา 08:00–09:00) · ส่งงาน Research Design (กำหนด 18 ก.ค. — เช็คสถานะว่าส่งแล้ว) · Present Research Topic", "accent": "var(--accent)", "countdownEnd": "2026-10-06", "countdownSuffix": "สู้ๆ นะครับ"}, {"emoji": "🌵", "title": "David Days Checklist", "when": "ทุกศุกร์ · 10:30", "summary": "CJ Express · Watsons · Tops · 7-Eleven <span class=\"mut\">(รายละเอียดส่งทาง LINE)</span>", "accent": "var(--accent)", "countdownEnd": null, "countdownSuffix": ""}, {"emoji": "🎓", "title": "เลือกอาจารย์ที่ปรึกษา PhD", "when": "2026-10-24 · 15:00", "summary": "เตรียมเลือก อ.เอ (ดร.สุทธินันท์) เป็นที่ปรึกษา PhD", "accent": "#60a5fa", "countdownDate": "2026-10-24"}]}</script>
+  <script>(function(){try{
+    var B=JSON.parse(document.getElementById('m-brief-data').textContent);
+    var now=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Bangkok'}));
+    function dt(iso){try{var p=iso.split('-');return Math.ceil((new Date(+p[0],+p[1]-1,+p[2])-now)/864e5);}catch(_){return null;}}
+    var html=B.cards.map(function(c){
+      var badge='';
+      if(c.countdownDate){var d=dt(c.countdownDate);if(d!=null)badge=' <b style="color:#60a5fa">'+(d>0?('อีก '+d+' วัน'):(d===0?'วันนี้!':'ผ่านแล้ว'))+'</b>';}
+      else if(c.countdownEnd){var d2=dt(c.countdownEnd);if(d2!=null&&d2>0){badge=' <span style="color:var(--accent)">· เหลืออีก ~'+Math.ceil(d2/7)+' สัปดาห์'+(c.countdownSuffix?(' '+c.countdownSuffix):'')+'</span>';}}
+      return '<div class="card" style="border-left:3px solid '+c.accent+'">'
+        +'<div class="tt" style="font-size:14px">'+c.emoji+' '+c.title+'</div>'
+        +'<div class="xs mut" style="margin-top:2px">'+c.when+'</div>'
+        +'<div class="sm" style="margin-top:7px">'+c.summary+badge+'</div></div>';
+    }).join('');
+    document.getElementById('mBriefCards').innerHTML=html;
+  }catch(_){}})();</script>
 
   <div class="sec-h" style="margin-top:20px"><span>📅 เช็คลิสต์สัปดาห์นี้</span><span class="n" id="weekrange">—</span></div>
   <div id="week"></div>
